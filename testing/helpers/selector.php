@@ -1,4 +1,7 @@
 <?php
+
+use \RedBean\Facade as R;
+
 /**
  * Selector
  *

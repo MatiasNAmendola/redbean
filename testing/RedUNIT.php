@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RedUNIT
  * Base class for RedUNIT, the micro unit test suite for RedBeanPHP
