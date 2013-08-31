@@ -1,6 +1,20 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\DuplicationManager;
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Base_Dup
+ * Dup
  *
  * @file    RedUNIT/Base/Dup.php
  * @desc    Intensive test for dup()
@@ -11,7 +25,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Dup extends RedUNIT_Base
+class Dup extends Base
 {
 	/**
 	 * Test exportAll and caching.
@@ -121,7 +135,7 @@ class RedUNIT_Base_Dup extends RedUNIT_Base
 
 		$can = R::load( 'can', R::store( $can ) );
 
-		$d = new RedBean_DuplicationManager( R::$toolbox );
+		$d = new DuplicationManager( R::$toolbox );
 
 		$d->setCacheTables( true );
 
@@ -156,7 +170,7 @@ class RedUNIT_Base_Dup extends RedUNIT_Base
 
 		$can = R::load( 'can', R::store( $can ) );
 
-		$d = new RedBean_DuplicationManager( R::$toolbox );
+		$d = new DuplicationManager( R::$toolbox );
 
 		/**
 		 * $cache = '{"book": {
@@ -403,13 +417,13 @@ class RedUNIT_Base_Dup extends RedUNIT_Base
 
 		asrt( isset( $export['ownPage'][0] ), true );
 
-		RedBean_OODBBean::setFlagKeyedExport( true );
+		OODBBean::setFlagKeyedExport( true );
 
 		$export = $book->export();
 
 		asrt( isset( $export['ownPage'][1] ), true );
 
-		RedBean_OODBBean::setFlagKeyedExport( false );
+		OODBBean::setFlagKeyedExport( false );
 
 		$export = $book->export();
 
@@ -464,7 +478,7 @@ class RedUNIT_Base_Dup extends RedUNIT_Base
 								$index      = $k;
 							}
 						}
-						if ( !$foundMatch ) throw new Exception( 'failed to find match for object ' . $nestedObject->id );
+						if ( !$foundMatch ) throw new\Exception( 'failed to find match for object ' . $nestedObject->id );
 					}
 					$this->compare( $nestedObject, $array[$property][$index] );
 				}

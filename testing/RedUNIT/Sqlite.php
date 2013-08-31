@@ -1,6 +1,9 @@
 <?php
+
+namespace RedUNIT;
+
 /**
- * RedUNIT_Sqlite
+ * Sqlite
  *
  * @file    RedUNIT/Sqlite.php
  * @desc    Base class for all SQLite specific tests.
@@ -11,7 +14,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Sqlite extends RedUNIT
+class Sqlite extends RedUNIT
 {
 
 	/*

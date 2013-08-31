@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Postgres;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Postgres_Foreignkeys
+ * Foreignkeys
  *
  * @file    RedUNIT/Postgres/Foreignkeys.php
  * @desc    Tests the creation of foreign keys.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Postgres_Foreignkeys extends RedUNIT_Postgres
+class Foreignkeys extends \RedUNIT\Postgres
 {
 	/**
 	 * Test foreign keys with postgres.

@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Base_With
+ * With
  *
  * @file    RedUNIT/Base/With.php
  * @desc    Tests query modification of own-lists with prefix-with
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_With extends RedUNIT_Base
+class With extends Base
 {
 
 	/**

@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Blackhole; 
+
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Blackhole_Labels
+ * Labels
  *
  * @file    RedUNIT/Blackhole/Labels.php
  * @desc    Tests Facade Label functions.
@@ -12,7 +25,7 @@
  * with this source code in the file license.txt.
  */
 
-class RedUNIT_Blackhole_Labels extends RedUNIT_Blackhole
+class Labels extends Blackhole
 {
 	/**
 	 * Test basic labels.
@@ -30,7 +43,7 @@ class RedUNIT_Blackhole_Labels extends RedUNIT_Blackhole
 		asrt( count( $meals ), 3 );
 
 		foreach ( $meals as $m ) {
-			asrt( ( $m instanceof RedBean_OODBBean ), true );
+			asrt( ( $m instanceof OODBBean ), true );
 		}
 
 		$listOfMeals = implode( ',', R::gatherLabels( $meals ) );

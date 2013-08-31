@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Oracle;
+
+use RedUNIT\Oracle;
+use RedBean\RedBean\Facade as R;
+
 /**
- * RedUNIT_Oracle_Setget
+ * Setget
  *
  * @file    RedUNIT/Oracle/Setget.php
  * @desc    Tests whether values are stored correctly.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Oracle_Setget extends RedUNIT_Oracle
+class Setget extends Oracle
 {
 	/**
 	 * Test numbers.

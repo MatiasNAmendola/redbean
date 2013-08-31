@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Base_Chill
+ * Chill
  *
  * @file    RedUNIT/Base/Chill.php
  * @desc    Tests chill list functionality, i.e. freezing a subset of all types.
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Chill extends RedUNIT_Base
+class Chill extends Base
 {
 	/**
 	 * Test Chill mode.
@@ -50,7 +58,7 @@ class RedUNIT_Base_Chill extends RedUNIT_Base
 		try {
 			R::store( $bean );
 			fail();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 

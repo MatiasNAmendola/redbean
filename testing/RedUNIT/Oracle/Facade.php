@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Oracle;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Oracle; 
+use RedBean\AssociationManager;
+use RedBean\OODB;
+use RedBean\Toolbox;
+use RedBean\Adapter;
+use RedBean\QueryWriter;
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Oracle_Facade
+ * Facade
  *
  * @file    RedUNIT/Oracle/Facade.php
  * @desc    Tests basic functions through facade.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Oracle_Facade extends RedUNIT_Oracle
+class Facade extends Oracle
 {
 	/**
 	 * Basic tests through Facade.
@@ -26,16 +39,16 @@ class RedUNIT_Oracle_Facade extends RedUNIT_Oracle
 		$redbean = $toolbox->getRedBean();
 		$pdo     = $adapter->getDatabase();
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
-		asrt( R::$redbean instanceof RedBean_OODB, true );
-		asrt( R::$toolbox instanceof RedBean_Toolbox, true );
-		asrt( R::$adapter instanceof RedBean_Adapter, true );
-		asrt( R::$writer instanceof RedBean_QueryWriter, true );
+		asrt( R::$redbean instanceof OODB, true );
+		asrt( R::$toolbox instanceof Toolbox, true );
+		asrt( R::$adapter instanceof Adapter, true );
+		asrt( R::$writer instanceof QueryWriter, true );
 
 		$book = R::dispense( "book" );
 
-		asrt( $book instanceof RedBean_OODBBean, true );
+		asrt( $book instanceof OODBBean, true );
 
 		$book->title = "a nice book";
 

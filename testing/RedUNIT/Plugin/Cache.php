@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\Plugin;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\Toolbox;
+
 /**
- * RedUNIT_Plugin_Cache
+ * Cache
  *
  * @file    RedUNIT/Plugin/Cache.php
  * @desc    Tests caching plugin.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Plugin_Cache extends RedUNIT_Plugin
+class Cache extends \RedUNIT\Plugin
 {
 
 	/**
@@ -31,9 +38,9 @@ class RedUNIT_Plugin_Cache extends RedUNIT_Plugin
 	{
 		$t = R::$toolbox;
 
-		$cachedOODB = new RedBean_Plugin_Cache( $t->getWriter() );
+		$cachedOODB = new \RedBean\Plugin\Cache( $t->getWriter() );
 
-		$old = R::configureFacadeWithToolbox( new RedBean_Toolbox( $cachedOODB, $t->getDatabaseAdapter(), $t->getWriter() ) );
+		$old = R::configureFacadeWithToolbox( new Toolbox( $cachedOODB, $t->getDatabaseAdapter(), $t->getWriter() ) );
 
 		function hm() { return R::$redbean->getHits() . '-' . R::$redbean->getMisses(); }
 

@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\Mysql;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\AssociationManager;
+
 /**
- * RedUNIT_Mysql_Preexist
+ * Preexist
  *
  * @file    RedUNIT/Mysql/Preexist.php
  * @desc    Tests integration with pre-existing schemas.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Mysql_Preexist extends RedUNIT_Mysql
+class Preexist extends \RedUNIT\Mysql
 {
 	/**
 	 * Test integration with pre-existing schemas.
@@ -26,7 +33,7 @@ class RedUNIT_Mysql_Preexist extends RedUNIT_Mysql
 		$redbean     = $toolbox->getRedBean();
 		$pdo         = $adapter->getDatabase();
 
-		$a           = new RedBean_AssociationManager( $toolbox );
+		$a           = new AssociationManager( $toolbox );
 
 		$page        = $redbean->dispense( "page" );
 

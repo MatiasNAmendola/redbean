@@ -1,6 +1,15 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\ModelHelper;
+use RedBean\RException;
+
 /**
- * RedUNIT_Base_Fuse
+ * Fuse
  *
  * @file    RedUNIT/Base/Fuse.php
  * @desc    Tests Fuse feature; coupling beans to models.
@@ -11,7 +20,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Fuse extends RedUNIT_Base
+class Fuse extends Base
 {
 	/**
 	 * Test FUSE and model formatting.
@@ -42,7 +51,7 @@ class RedUNIT_Base_Fuse extends RedUNIT_Base
 
 		$a = R::getAll( "select * from blog " );
 
-		RedBean_ModelHelper::setModelFormatter( new mymodelformatter );
+		ModelHelper::setModelFormatter( new \mymodelformatter );
 
 		$w = R::dispense( "weirdo" );
 
@@ -66,7 +75,7 @@ class RedUNIT_Base_Fuse extends RedUNIT_Base
 			R::tag( $blog, array( "smart", "interesting", "lousy!" ) );
 
 			pass();
-		} catch ( RedBean_Exception $e ) {
+		} catch ( RException $e ) {
 			fail();
 		}
 

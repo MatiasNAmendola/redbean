@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Base_Keywords
+ * Keywords
  *
  * @file    RedUNIT/Base/Keywords.php
  * @desc    Tests for possible keyword clashes.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Keywords extends RedUNIT_Base
+class Keywords extends Base
 {
 	/**
 	 * What drivers should be loaded for this test pack?
@@ -43,7 +56,7 @@ class RedUNIT_Base_Keywords extends RedUNIT_Base
 
 		R::setStrictTyping( false );
 
-		RedBean_OODBBean::setFlagBeautifulColumnNames( false );
+		OODBBean::setFlagBeautifulColumnNames( false );
 
 		foreach ( $keywords as $k ) {
 			R::nuke();
@@ -72,7 +85,7 @@ class RedUNIT_Base_Keywords extends RedUNIT_Base
 			pass();
 		}
 
-		RedBean_OODBBean::setFlagBeautifulColumnNames( true );
+		OODBBean::setFlagBeautifulColumnNames( true );
 
 		R::setStrictTyping( true );
 	}

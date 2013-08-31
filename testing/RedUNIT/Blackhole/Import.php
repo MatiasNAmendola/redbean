@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Blackhole; 
+
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Blackhole_Import
+ * Import
  *
  * @file    RedUNIT/Blackhole/Import.php
  * @desc    Tests basic bean importing features.
@@ -12,7 +25,7 @@
  * with this source code in the file license.txt.
  */
 
-class RedUNIT_Blackhole_Import extends RedUNIT_Blackhole
+class Import extends Blackhole
 {
 	/**
 	 * Test import from and tainted.
@@ -57,7 +70,7 @@ class RedUNIT_Blackhole_Import extends RedUNIT_Blackhole
 
 		testpack( 'Test basic import() feature.' );
 
-		$bean = new RedBean_OODBBean;
+		$bean = new OODBBean;
 
 		$bean->import( array( "a" => 1, "b" => 2 ) );
 

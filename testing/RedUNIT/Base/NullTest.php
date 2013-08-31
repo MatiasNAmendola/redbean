@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Base;
+
+use RedUNIT\Base;
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Base_Null
+ * Null
  *
  * @file    RedUNIT/Base/Null.php
  * @desc    Tests handling of NULL values.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Null extends RedUNIT_Base
+class NullTest extends Base
 {
 	/**
 	 * Test NULL handling, setting a property to NULL must

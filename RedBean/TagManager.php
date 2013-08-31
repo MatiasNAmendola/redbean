@@ -1,4 +1,13 @@
 <?php
+
+namespace RedBean;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Toolbox;
+use RedBean\AssociationManager;
+use RedBean\OODBBean;
+
 /**
  * RedBean Tag Manager.
  * The tag manager offers an easy way to quickly implement basic tagging
@@ -16,21 +25,21 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_TagManager
+class TagManager
 {
 
 	/**
-	 * @var RedBean_Toolbox
+	 * @var Toolbox
 	 */
 	protected $toolbox;
 
 	/**
-	 * @var RedBean_AssociationManager
+	 * @var AssociationManager
 	 */
 	protected $associationManager;
 
 	/**
-	 * @var RedBean_OODBBean
+	 * @var OODBBean
 	 */
 	protected $redbean;
 
@@ -59,9 +68,9 @@ class RedBean_TagManager
 	 * The tag manager offers an easy way to quickly implement basic tagging
 	 * functionality.
 	 *
-	 * @param RedBean_Toolbox $toolbox
+	 * @param Toolbox $toolbox
 	 */
-	public function __construct( RedBean_Toolbox $toolbox )
+	public function __construct( Toolbox $toolbox )
 	{
 		$this->toolbox = $toolbox;
 		$this->redbean = $toolbox->getRedBean();
@@ -74,7 +83,7 @@ class RedBean_TagManager
 	 *
 	 * @param string $title title
 	 *
-	 * @return RedBean_OODBBean
+	 * @return OODBBean
 	 */
 	public function findTagByTitle( $title )
 	{
@@ -98,7 +107,7 @@ class RedBean_TagManager
 	 * method will return TRUE if one of the tags matches, FALSE if none
 	 * match.
 	 *
-	 * @param  RedBean_OODBBean $bean bean to check for tags
+	 * @param  OODBBean $bean bean to check for tags
 	 * @param  array            $tags list of tags
 	 * @param  boolean          $all  whether they must all match or just some
 	 *
@@ -122,7 +131,7 @@ class RedBean_TagManager
 	 * Removes all sepcified tags from the bean. The tags specified in
 	 * the second parameter will no longer be associated with the bean.
 	 *
-	 * @param  RedBean_OODBBean $bean    tagged bean
+	 * @param  OODBBean $bean    tagged bean
 	 * @param  array            $tagList list of tags (names)
 	 *
 	 * @return void
@@ -146,12 +155,12 @@ class RedBean_TagManager
 	 * be associated with the bean.
 	 * You may also pass an array instead of a string.
 	 *
-	 * @param RedBean_OODBBean $bean    bean
+	 * @param OODBBean $bean    bean
 	 * @param mixed            $tagList tags
 	 *
 	 * @return array
 	 */
-	public function tag( RedBean_OODBBean $bean, $tagList = null )
+	public function tag( OODBBean $bean, $tagList = null )
 	{
 		if ( is_null( $tagList ) ) {
 			$tags = array();
@@ -182,12 +191,12 @@ class RedBean_TagManager
 	 * be associated with the bean.
 	 * You may also pass an array instead of a string.
 	 *
-	 * @param RedBean_OODBBean $bean    bean to add tags to
+	 * @param OODBBean $bean    bean to add tags to
 	 * @param array            $tagList list of tags to add to bean
 	 *
 	 * @return void
 	 */
-	public function addTags( RedBean_OODBBean $bean, $tagList )
+	public function addTags( OODBBean $bean, $tagList )
 	{
 		$tags = $this->extractTagsIfNeeded( $tagList );
 

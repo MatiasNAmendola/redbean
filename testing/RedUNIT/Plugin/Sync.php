@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\Plugin;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_Plugin_Sync
+ * Sync
  *
  * @file    RedUNIT/Plugin/Sync.php
  * @desc    Tests sync functionality.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Plugin_Sync extends RedUNIT_Plugin
+class Sync extends \RedUNIT\Plugin
 {
 	/**
 	 * Test sync.
@@ -70,7 +77,7 @@ class RedUNIT_Plugin_Sync extends RedUNIT_Plugin
 				R::syncSchema( 'non-existant', $sourceKey );
 
 				fail();
-			} catch ( RedBean_Exception_Security $e ) {
+			} catch ( Security $e ) {
 				pass();
 			}
 
@@ -78,10 +85,11 @@ class RedUNIT_Plugin_Sync extends RedUNIT_Plugin
 				R::syncSchema( $sourceKey, 'non-existant' );
 
 				fail();
-			} catch ( RedBean_Exception_Security $e ) {
+			} catch ( Security $e ) {
 				pass();
 			}
 
+			R::debug(1);
 			R::syncSchema( $sourceKey, $key );
 
 			$tables = array_flip( $toolbox->getWriter()->getTables() );

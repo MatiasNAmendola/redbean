@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean\QueryWriter;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\QueryWriter\AQueryWriter;
+use RedBean\QueryWriter;
+use RedBean\Adapter\DBAdapter;
+use RedBean\Adapter;
+
 /**
  * RedBean CUBRID Writer
  *
@@ -11,7 +21,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implements RedBean_QueryWriter
+class CUBRID extends AQueryWriter implements QueryWriter
 {
 	/**
 	 * Data types
@@ -24,7 +34,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	const C_DATATYPE_SPECIFIED        = 99;
 
 	/**
-	 * @var RedBean_Adapter_DBAdapter
+	 * @var DBAdapter
 	 */
 	protected $adapter;
 
@@ -34,7 +44,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	protected $quoteCharacter = '`';
 
 	/**
-	 * Obtains the keys of a table using the PDO schema function.
+	 * Obtains the keys of a table using the\PDO schema function.
 	 *
 	 * @param string $table
 	 *
@@ -44,10 +54,10 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	{
 		$pdo  = $this->adapter->getDatabase()->getPDO();
 
-		$keys = $pdo->cubrid_schema( PDO::CUBRID_SCH_EXPORTED_KEYS, $table );
+		$keys = $pdo->cubrid_schema(\PDO::CUBRID_SCH_EXPORTED_KEYS, $table );
 
 		if ( $table2 ) {
-			$keys = array_merge( $keys, $pdo->cubrid_schema( PDO::CUBRID_SCH_IMPORTED_KEYS, $table2 ) );
+			$keys = array_merge( $keys, $pdo->cubrid_schema(\PDO::CUBRID_SCH_IMPORTED_KEYS, $table2 ) );
 		}
 
 		return $keys;
@@ -133,16 +143,16 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	/**
 	 * Constructor
 	 *
-	 * @param RedBean_Adapter $adapter Database Adapter
+	 * @param Adapter $adapter Database Adapter
 	 */
-	public function __construct( RedBean_Adapter $adapter )
+	public function __construct( Adapter $adapter )
 	{
 		$this->typeno_sqltype = array(
-			RedBean_QueryWriter_CUBRID::C_DATATYPE_INTEGER          => ' INTEGER ',
-			RedBean_QueryWriter_CUBRID::C_DATATYPE_DOUBLE           => ' DOUBLE ',
-			RedBean_QueryWriter_CUBRID::C_DATATYPE_STRING           => ' STRING ',
-			RedBean_QueryWriter_CUBRID::C_DATATYPE_SPECIAL_DATE     => ' DATE ',
-			RedBean_QueryWriter_CUBRID::C_DATATYPE_SPECIAL_DATETIME => ' DATETIME ',
+			CUBRID::C_DATATYPE_INTEGER          => ' INTEGER ',
+			CUBRID::C_DATATYPE_DOUBLE           => ' DOUBLE ',
+			CUBRID::C_DATATYPE_STRING           => ' STRING ',
+			CUBRID::C_DATATYPE_SPECIAL_DATE     => ' DATE ',
+			CUBRID::C_DATATYPE_SPECIAL_DATETIME => ' DATETIME ',
 		);
 
 		$this->sqltype_typeno = array();
@@ -168,7 +178,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::getTables
+	 * @see QueryWriter::getTables
 	 */
 	public function getTables()
 	{
@@ -178,7 +188,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::createTable
+	 * @see QueryWriter::createTable
 	 */
 	public function createTable( $table )
 	{
@@ -192,7 +202,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::getColumns
+	 * @see QueryWriter::getColumns
 	 */
 	public function getColumns( $table )
 	{
@@ -209,7 +219,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::scanType
+	 * @see QueryWriter::scanType
 	 */
 	public function scanType( $value, $flagSpecial = false )
 	{
@@ -243,7 +253,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::code
+	 * @see QueryWriter::code
 	 */
 	public function code( $typedescription, $includeSpecials = false )
 	{
@@ -253,7 +263,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 			return $r;
 		}
 
-		if ( $r > RedBean_QueryWriter::C_DATATYPE_RANGE_SPECIAL ) {
+		if ( $r > QueryWriter::C_DATATYPE_RANGE_SPECIAL ) {
 			return self::C_DATATYPE_SPECIFIED;
 		}
 
@@ -261,7 +271,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addColumn
+	 * @see QueryWriter::addColumn
 	 */
 	public function addColumn( $type, $column, $field )
 	{
@@ -277,7 +287,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addUniqueIndex
+	 * @see QueryWriter::addUniqueIndex
 	 */
 	public function addUniqueIndex( $table, $columns )
 	{
@@ -307,19 +317,19 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::sqlStateIn
+	 * @see QueryWriter::sqlStateIn
 	 */
 	public function sqlStateIn( $state, $list )
 	{
 		return ( $state == 'HY000' ) ? ( count( array_diff( array(
-				RedBean_QueryWriter::C_SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATION,
-				RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,
-				RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_TABLE
+				QueryWriter::C_SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATION,
+				QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,
+				QueryWriter::C_SQLSTATE_NO_SUCH_TABLE
 			), $list ) ) !== 3 ) : false;
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addIndex
+	 * @see QueryWriter::addIndex
 	 */
 	public function addIndex( $type, $name, $column )
 	{
@@ -338,12 +348,12 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 
 		try {
 			$this->adapter->exec( "CREATE INDEX $name ON $table ($column) " );
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 		}
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addFK
+	 * @see QueryWriter::addFK
 	 */
 	public function addFK( $type, $targetType, $field, $targetField, $isDependent = false )
 	{
@@ -351,7 +361,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::wipeAll
+	 * @see QueryWriter::wipeAll
 	 */
 	public function wipeAll()
 	{
@@ -365,7 +375,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::esc
+	 * @see QueryWriter::esc
 	 */
 	public function esc( $dbStructure, $noQuotes = false )
 	{

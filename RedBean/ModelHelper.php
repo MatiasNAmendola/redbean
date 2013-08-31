@@ -1,4 +1,15 @@
 <?php
+
+namespace RedBean;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Observer;
+use RedBean\IModelFormatter;
+use RedBean\DependencyInjector;
+use RedBean\OODBBean;
+use RedBean\Observable;
+
 /**
  * RedBean Model Helper
  *
@@ -13,16 +24,16 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_ModelHelper implements RedBean_Observer
+class ModelHelper implements Observer
 {
 
 	/**
-	 * @var RedBean_IModelFormatter
+	 * @var IModelFormatter
 	 */
 	private static $modelFormatter;
 
 	/**
-	 * @var RedBean_DependencyInjector
+	 * @var DependencyInjector
 	 */
 	private static $dependencyInjector;
 
@@ -32,7 +43,7 @@ class RedBean_ModelHelper implements RedBean_Observer
 	private static $modelCache = array();
 
 	/**
-	 * @see RedBean_Observer::onEvent
+	 * @see Observer::onEvent
 	 */
 	public function onEvent( $eventName, $bean )
 	{
@@ -44,7 +55,7 @@ class RedBean_ModelHelper implements RedBean_Observer
 	 * full model name.
 	 *
 	 * @param string           $model
-	 * @param RedBean_OODBBean $bean
+	 * @param OODBBean $bean
 	 *
 	 * @return string
 	 */
@@ -57,9 +68,11 @@ class RedBean_ModelHelper implements RedBean_Observer
 		if ( self::$modelFormatter ) {
 			$modelID = self::$modelFormatter->formatModel( $model, $bean );
 		} else {
-			$modelID = 'Model_' . ucfirst( $model );
+			$modelID = REDBEAN_MODEL_PREFIX . ucfirst( $model );
 		}
 
+		//die($modelID);
+		
 		self::$modelCache[$model] = $modelID;
 
 		return self::$modelCache[$model];
@@ -98,11 +111,11 @@ class RedBean_ModelHelper implements RedBean_Observer
 	/**
 	 * Sets the dependency injector to be used.
 	 *
-	 * @param RedBean_DependencyInjector $di injector to be used
+	 * @param DependencyInjector $di injector to be used
 	 *
 	 * @return void
 	 */
-	public static function setDependencyInjector( RedBean_DependencyInjector $di )
+	public static function setDependencyInjector( DependencyInjector $di )
 	{
 		self::$dependencyInjector = $di;
 	}
@@ -124,11 +137,11 @@ class RedBean_ModelHelper implements RedBean_Observer
 	 * that belongs to the CRUD bean and this model will take over control from
 	 * there.
 	 *
-	 * @param RedBean_Observable $observable
+	 * @param Observable $observable
 	 *
 	 * @return void
 	 */
-	public function attachEventListeners( RedBean_Observable $observable )
+	public function attachEventListeners( Observable $observable )
 	{
 		foreach ( array( 'update', 'open', 'delete', 'after_delete', 'after_update', 'dispense' ) as $e ) {
 			$observable->addEventListener( $e, $this );

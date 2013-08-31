@@ -1,6 +1,9 @@
 <?php
+
+namespace RedUNIT;
+
 /**
- * RedUNIT_Base
+ * Base
  *
  * @file    RedUNIT/Base.php
  * @desc    Base class for all drivers that support all database systems.
@@ -11,7 +14,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base extends RedUNIT
+class Base extends RedUNIT
 {
 	/**
 	 * What drivers should be loaded for this test pack?

@@ -1,6 +1,11 @@
 <?php
+
+namespace RedUNIT;
+
+use RedUNIT\RedUNIT;
+
 /**
- * RedUNIT_Blackhole
+ * Blackhole
  *
  * @file    RedUNIT/Blackhole.php
  * @desc    Tests that do not require a database or can just use the base SQLite driver.
@@ -11,7 +16,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Blackhole extends RedUNIT
+class Blackhole extends RedUNIT
 {
 	/**
 	 * Returns the drivers this test suite applies to.

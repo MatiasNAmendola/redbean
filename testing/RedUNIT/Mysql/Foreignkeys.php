@@ -1,6 +1,11 @@
 <?php
+
+namespace RedUNIT\Mysql;
+
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Mysql_Foreignkeys
+ * Foreignkeys
  *
  * @file    RedUNIT/Mysql/Foreignkeys.php
  * @desc    Tests creation of foreign keys.
@@ -11,7 +16,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Mysql_Foreignkeys extends RedUNIT_Mysql
+class Foreignkeys extends \RedUNIT\Mysql
 {
 	/**
 	 * Basic FK tests.

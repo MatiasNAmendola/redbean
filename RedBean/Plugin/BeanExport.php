@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Plugin;
+use RedBean\Toolbox;
+use RedBean\OODBBean;
+use RedBean\RException\SQL;
+
 /**
  * Recursive Bean Export
  *
@@ -14,10 +24,10 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_BeanExport implements RedBean_Plugin
+class BeanExport implements Plugin
 {
 	/**
-	 * @var null|\RedBean_Toolbox
+	 * @var null|\Toolbox
 	 */
 	protected $toolbox = null;
 
@@ -56,9 +66,9 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 	 * contents in the export array.
 	 *
 	 * @param array            $export export array to store data in
-	 * @param RedBean_OODBBean $bean   bean to collect data from
+	 * @param OODBBean $bean   bean to collect data from
 	 * @param string           $key    key for the current value
-	 * @param RedBean_OODBBean $value  the parent bean to extract
+	 * @param OODBBean $value  the parent bean to extract
 	 *
 	 * @return void
 	 */
@@ -80,7 +90,7 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 	 * contents in the export array.
 	 *
 	 * @param array            $export export array to store data in
-	 * @param RedBean_OODBBean $bean   bean to collect data from
+	 * @param OODBBean $bean   bean to collect data from
 	 * @param string           $table  table
 	 * @param array            $cols   columns
 	 *
@@ -104,7 +114,7 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 	 * contents in the export array.
 	 *
 	 * @param array            $export export array to store data in
-	 * @param RedBean_OODBBean $bean   bean to collect data from
+	 * @param OODBBean $bean   bean to collect data from
 	 * @param string           $table  table
 	 *
 	 * @return void
@@ -135,9 +145,9 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 	/**
 	 * Constructor
 	 *
-	 * @param RedBean_Toolbox $toolbox
+	 * @param Toolbox $toolbox
 	 */
-	public function __construct( RedBean_Toolbox $toolbox )
+	public function __construct( Toolbox $toolbox )
 	{
 		$this->toolbox = $toolbox;
 	}
@@ -154,7 +164,7 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 		foreach ( $tables as $table => $columns ) {
 			try {
 				$tables[$table] = $this->toolbox->getWriter()->getColumns( $table );
-			} catch ( RedBean_Exception_SQL $e ) {
+			} catch ( SQL $e ) {
 				$tables[$table] = array();
 			}
 		}
@@ -185,7 +195,7 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 	/**
 	 * Exports a collection of beans
 	 *
-	 * @param    mixed $beans      Either array or RedBean_OODBBean
+	 * @param    mixed $beans      Either array or OODBBean
 	 * @param    bool  $resetRecur Whether we need to reset the recursion check array (first time only)
 	 *
 	 * @return    array $export Exported beans
@@ -262,11 +272,11 @@ class RedBean_Plugin_BeanExport implements RedBean_Plugin
 	/**
 	 * Exports a single bean
 	 *
-	 * @param RedBean_OODBBean $bean Bean to be exported
+	 * @param OODBBean $bean Bean to be exported
 	 *
 	 * @return array|null $array Array export of bean
 	 */
-	public function exportBean( RedBean_OODBBean $bean )
+	public function exportBean( OODBBean $bean )
 	{
 		$bid = $bean->getMeta( 'type' ) . '-' . $bean->getID();
 

@@ -1,6 +1,15 @@
 <?php
+
+namespace RedUNIT\Mysql;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\AssociationManager;
+use RedBean\RException\SQL;
+use RedBean\Plugin\QueryLogger;
+
 /**
- * RedUNIT_Mysql_Freeze
+ * Freeze
  *
  * @file    RedUNIT/Mysql/Freeze.php
  * @desc    Tests freezing of databases for production environments.
@@ -11,7 +20,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Mysql_Freeze extends RedUNIT_Mysql
+class Freeze extends \RedUNIT\Mysql
 {
 	/**
 	 * Tests freezing the database.
@@ -28,7 +37,7 @@ class RedUNIT_Mysql_Freeze extends RedUNIT_Mysql
 		$redbean = $toolbox->getRedBean();
 		$pdo     = $adapter->getDatabase();
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$post = $redbean->dispense( 'post' );
 
@@ -68,7 +77,7 @@ class RedUNIT_Mysql_Freeze extends RedUNIT_Mysql
 			$id = $redbean->store( $page );
 
 			fail();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			pass();
 		}
 
@@ -80,7 +89,7 @@ class RedUNIT_Mysql_Freeze extends RedUNIT_Mysql
 			$id = $redbean->store( $post );
 
 			pass();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			fail();
 		}
 
@@ -95,11 +104,11 @@ class RedUNIT_Mysql_Freeze extends RedUNIT_Mysql
 			$id = $redbean->store( $newtype );
 
 			fail();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			pass();
 		}
 
-		$logger = RedBean_Plugin_QueryLogger::getInstanceAndAttach( $adapter );
+		$logger = QueryLogger::getInstanceAndAttach( $adapter );
 
 		// Now log and make sure no 'describe SQL' happens
 		$page = $redbean->dispense( "page" );

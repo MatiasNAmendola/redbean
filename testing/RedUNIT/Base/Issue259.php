@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Base_Issue259
+ * Issue259
  *
  * @file    RedUNIT/Base/Issue259.php
  * @desc    Issue #259 - Stash cache breaks model delegation in open().
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Issue259 extends RedUNIT_Base
+class Issue259 extends Base
 {
 	/**
 	 * Test to make sure stash cache works with recursively opening models
@@ -46,7 +54,7 @@ class RedUNIT_Base_Issue259 extends RedUNIT_Base
 /**
  * Mock Model.
  */
-class Model_Mother extends RedBean_SimpleModel
+class Model_Mother extends SimpleModel
 {
 	public function open()
 	{
@@ -58,7 +66,7 @@ class Model_Mother extends RedBean_SimpleModel
 /**
  * Mock Model.
  */
-class Model_Child extends RedBean_SimpleModel
+class Model_Child extends SimpleModel
 {
 	public function open()
 	{

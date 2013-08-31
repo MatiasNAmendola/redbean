@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\OODB;
+use RedBean\QueryWriter;
+use RedBean\Adapter\DBAdapter;
+use RedBean\Adapter;
+
 /**
  * @file      RedBean/ToolBox.php
  * @desc      A RedBeanPHP-wide service locator
@@ -16,21 +26,21 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_ToolBox
+class ToolBox
 {
 
 	/**
-	 * @var RedBean_OODB
+	 * @var OODB
 	 */
 	protected $oodb;
 
 	/**
-	 * @var RedBean_QueryWriter
+	 * @var QueryWriter
 	 */
 	protected $writer;
 
 	/**
-	 * @var RedBean_Adapter_DBAdapter
+	 * @var DBAdapter
 	 */
 	protected $adapter;
 
@@ -42,13 +52,13 @@ class RedBean_ToolBox
 	 * the adapter, the query writer and the core functionality of RedBeanPHP in
 	 * OODB.
 	 *
-	 * @param RedBean_OODB              $oodb    Object Database
-	 * @param RedBean_Adapter_DBAdapter $adapter Adapter
-	 * @param RedBean_QueryWriter       $writer  Writer
+	 * @param OODB              $oodb    Object Database
+	 * @param DBAdapter $adapter Adapter
+	 * @param QueryWriter       $writer  Writer
 	 *
-	 * @return RedBean_ToolBox
+	 * @return ToolBox
 	 */
-	public function __construct( RedBean_OODB $oodb, RedBean_Adapter $adapter, RedBean_QueryWriter $writer )
+	public function __construct( OODB $oodb, Adapter $adapter, QueryWriter $writer )
 	{
 		$this->oodb    = $oodb;
 		$this->adapter = $adapter;
@@ -60,7 +70,7 @@ class RedBean_ToolBox
 	/**
 	 * Returns the query writer in this toolbox.
 	 *
-	 * @return RedBean_QueryWriter
+	 * @return QueryWriter
 	 */
 	public function getWriter()
 	{
@@ -70,7 +80,7 @@ class RedBean_ToolBox
 	/**
 	 * Returns the OODB instance in this toolbox.
 	 *
-	 * @return RedBean_OODB
+	 * @return OODB
 	 */
 	public function getRedBean()
 	{
@@ -80,7 +90,7 @@ class RedBean_ToolBox
 	/**
 	 * Returns the database adapter in this toolbox.
 	 *
-	 * @return RedBean_Adapter_DBAdapter
+	 * @return DBAdapter
 	 */
 	public function getDatabaseAdapter()
 	{

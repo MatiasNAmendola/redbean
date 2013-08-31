@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\Mysql;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\SQLHelper;
+
 /**
- * RedUNIT_Mysql_Mix
+ * Mix
  *
  * @file    RedUNIT/Mysql/Mix.php
  * @desc    Tests mixing SQL with PHP, SQLHelper class.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Mysql_Mix extends RedUNIT_Mysql
+class Mix extends \RedUNIT\Mysql
 {
 	
 	/**
@@ -25,7 +32,7 @@ class RedUNIT_Mysql_Mix extends RedUNIT_Mysql
 
 		$adapter = $toolbox->getDatabaseAdapter();
 
-		$mixer = new RedBean_SQLHelper( $adapter );
+		$mixer = new SQLHelper( $adapter );
 
 		$now = $mixer->now();
 

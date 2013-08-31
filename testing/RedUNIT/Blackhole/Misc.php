@@ -1,6 +1,22 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+//Using the following RedBeanPHP Components:
+
+use RedUNIT\Blackhole; 
+use RedBean\Facade as R;
+use RedBean\Driver\RBPDO;
+use RedBean\Logger\LDefault;
+use RedBean\SQLHelper;
+use RedBean\RException\Security;
+use RedBean\Setup;
+use RedBean\ToolBox;
+use RedBean\Adapter;
+use RedBean\BeanHelper\FacadeHelper;
+
 /**
- * RedUNIT_Blackhole_Misc
+ * Misc
  *
  * @file    RedUNIT/Blackhole/Misc.php
  * @desc    Tests various features that do not rely on a database connection.
@@ -12,7 +28,7 @@
  * with this source code in the file license.txt.
  */
 
-class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
+class Misc extends Blackhole
 {
 	/*
 	 * What drivers should be loaded for this test pack?
@@ -31,9 +47,9 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 	{
 		testpack( 'Test debug mode with custom logger' );
 
-		$pdoDriver = new RedBean_Driver_PDO( R::getDatabaseAdapter()->getDatabase()->getPDO() );
+		$pdoDriver = new RBPDO( R::getDatabaseAdapter()->getDatabase()->getPDO() );
 
-		$customLogger = new CustomLogger;
+		$customLogger = new \CustomLogger;
 
 		$pdoDriver->setDebugMode( true, $customLogger );
 
@@ -42,7 +58,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 		asrt( count( $customLogger->getLogMessage() ), 1 );
 
 		$pdoDriver->setDebugMode( true, null );
-		asrt( ( $pdoDriver->getLogger() instanceof RedBean_Logger_Default ), true );
+		asrt( ( $pdoDriver->getLogger() instanceof LDefault ), true );
 
 		testpack( 'Test bean->getProperties method' );
 
@@ -70,7 +86,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 
 		asrt( trim( $sql ), 'join' );
 
-		RedBean_SQLHelper::useCamelCase( false );
+		SQLHelper::useCamelCase( false );
 
 		list( $sql, $params ) = R::$f->begin()->camelCase()->getQuery();
 
@@ -146,7 +162,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 	 * 
 	 * @return void
 	 * 
-	 * @throws Exception
+	 * @throws\Exception
 	 */
 	public function testTransactionInFacade()
 	{
@@ -183,10 +199,10 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 				R::store( $bean );
 
 				R::transaction( function () {
-					throw new Exception();
+					throw new\Exception();
 				} );
 			} );
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 		asrt( R::count( 'bean' ), 0 );
@@ -199,10 +215,10 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			R::transaction( function () use ( $bean ) {
 				R::transaction( function () use ( $bean ) {
 					R::store( $bean );
-					throw new Exception();
+					throw new\Exception();
 				} );
 			} );
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 
@@ -218,7 +234,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 					R::store( $bean );
 				} );
 			} );
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 
@@ -230,7 +246,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			R::transaction( 'nope' );
 
 			fail();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 
@@ -265,7 +281,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			R::debug( true );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -279,7 +295,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			$candy = R::dispense( 'CandyBar' );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -289,7 +305,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 
 		asrt( $s, 'candy!' );
 
-		$obj = new stdClass;
+		$obj = new \stdClass;
 
 		$bean = R::dispense( 'bean' );
 
@@ -352,7 +368,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 		asrt( $band->checkProperty( 'property1' ), true );
 		asrt( $band->checkProperty( 'property2' ), false );
 
-		$band = new Model_Band;
+		$band = new \Model_Band;
 
 		$bean = R::dispense( 'band' );
 
@@ -384,7 +400,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			( R::$toolboxes['default']->getDatabaseAdapter()->getDatabase()->connect() );
 
 			fail();
-		} catch ( PDOException $e ) {
+		} catch (\PDOException $e ) {
 			pass();
 
 			/**
@@ -403,7 +419,7 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			( R::$toolboxes['default']->getDatabaseAdapter()->getDatabase()->connect() );
 
 			fail();
-		} catch ( PDOException $e ) {
+		} catch (\PDOException $e ) {
 			pass();
 
 			/**
@@ -413,16 +429,16 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 			asrt( $e->getMessage(), 'Could not connect to database (mydatabase).' );
 		}
 
-		testpack( 'Can we pass a PDO object to Setup?' );
+		testpack( 'Can we pass a\PDO object to Setup?' );
 
-		$pdo = new PDO( 'sqlite:test.db' );
+		$pdo = new \PDO( 'sqlite:test.db' );
 
-		$toolbox = RedBean_Setup::kickstart( $pdo );
+		$toolbox = Setup::kickstart( $pdo );
 
-		asrt( ( $toolbox instanceof RedBean_ToolBox ), true );
+		asrt( ( $toolbox instanceof ToolBox ), true );
 
-		asrt( ( $toolbox->getDatabaseAdapter() instanceof RedBean_Adapter ), true );
-		asrt( ( $toolbox->getDatabaseAdapter()->getDatabase()->getPDO() instanceof PDO ), true );
+		asrt( ( $toolbox->getDatabaseAdapter() instanceof Adapter ), true );
+		asrt( ( $toolbox->getDatabaseAdapter()->getDatabase()->getPDO() instanceof\PDO ), true );
 
 		testpack( 'Test array interface of beans' );
 
@@ -463,9 +479,9 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 		asrt( count( R::dispense( 'countable' ) ), 1 );
 
 		// Otherwise untestable...
-		$bean->setBeanHelper( new RedBean_BeanHelper_Facade() );
+		$bean->setBeanHelper( new FacadeHelper() );
 
-		R::$redbean->setBeanHelper( new RedBean_BeanHelper_Facade() );
+		R::$redbean->setBeanHelper( new FacadeHelper() );
 
 		pass();
 
@@ -491,22 +507,3 @@ class RedUNIT_Blackhole_Misc extends RedUNIT_Blackhole
 	}
 }
 
-/**
- * Custom Logger class.
- * For testing purposes.
- */
-class CustomLogger extends RedBean_Logger_Default
-{
-
-	private $log;
-
-	public function getLogMessage()
-	{
-		return $this->log;
-	}
-
-	public function log()
-	{
-		$this->log = func_get_args();
-	}
-}

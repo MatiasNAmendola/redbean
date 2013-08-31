@@ -1,4 +1,12 @@
 <?php
+
+namespace RedBean;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Adapter;
+use RedBean\Adapter\DBAdapter;
+
 /**
  * RedBean SQL Helper
  * Allows you to mix PHP and SQL as if they were one language.
@@ -12,11 +20,11 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_SQLHelper
+class SQLHelper
 {
 
 	/**
-	 * @var RedBean_Adapter
+	 * @var Adapter
 	 */
 	protected $adapter;
 
@@ -59,9 +67,9 @@ class RedBean_SQLHelper
 	 * Constructor.
 	 * Allows you to mix PHP and SQL as if they were one language.
 	 *
-	 * @param RedBean_Adapter_DBAdapter $adapter database adapter for querying
+	 * @param DBAdapter $adapter database adapter for querying
 	 */
-	public function __construct( RedBean_Adapter $adapter )
+	public function __construct( Adapter $adapter )
 	{
 		$this->adapter = $adapter;
 	}
@@ -84,7 +92,7 @@ class RedBean_SQLHelper
 	 * @param string $funcName name of the next SQL statement/keyword
 	 * @param array  $args     list of statements to be seperated by commas
 	 *
-	 * @return string|RedBean_SQLHelper
+	 * @return string|SQLHelper
 	 */
 	public function __call( $funcName, $args = array() )
 	{
@@ -114,7 +122,7 @@ class RedBean_SQLHelper
 	 * Turns on capture mode. The helper will now postpone execution of the
 	 * resulting SQL until the get() method has been invoked.
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function begin()
 	{
@@ -130,7 +138,7 @@ class RedBean_SQLHelper
 	 *
 	 * @param mixed $param parameter to be added
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function put( $param )
 	{
@@ -166,7 +174,7 @@ class RedBean_SQLHelper
 	/**
 	 * Clears the parameter list as well as the SQL query string.
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function clear()
 	{
@@ -182,7 +190,7 @@ class RedBean_SQLHelper
 	 *
 	 * @param string $sql sql
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function addSQL( $sql )
 	{
@@ -216,11 +224,11 @@ class RedBean_SQLHelper
 	/**
 	 * Nests another query builder query in the current query.
 	 *
-	 * @param RedBean_SQLHelper
+	 * @param SQLHelper
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
-	public function nest( RedBean_SQLHelper $sqlHelper )
+	public function nest( SQLHelper $sqlHelper )
 	{
 		list( $sql, $params ) = $sqlHelper->getQuery();
 
@@ -234,7 +242,7 @@ class RedBean_SQLHelper
 	/**
 	 * Writes a '(' to the sql query.
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function open()
 	{
@@ -248,7 +256,7 @@ class RedBean_SQLHelper
 	/**
 	 * Writes a ')' to the sql query.
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function close()
 	{
@@ -283,7 +291,7 @@ class RedBean_SQLHelper
 	/**
 	 * Returns a new SQL Helper with the same adapter as the current one.
 	 *
-	 * @return RedBean_SQLHelper
+	 * @return SQLHelper
 	 */
 	public function getNew()
 	{

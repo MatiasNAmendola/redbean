@@ -1,6 +1,16 @@
 <?php
+
+namespace RedUNIT\Postgres;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\AssociationManager;
+use RedBean\QueryWriter\PostgreSQL;
+use RedBean\QueryWriter\MySQL;
+use RedBean\RException\SQL;
+
 /**
- * RedUNIT_Postgres_Writer
+ * Writer
  *
  * @file    RedUNIT/Postgres/Writer.php
  * @desc    A collection of writer specific tests.
@@ -11,7 +21,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
+class Writer extends \RedUNIT\Postgres
 {
 	/**
 	 * Test scanning and coding.
@@ -26,7 +36,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 		$redbean = $toolbox->getRedBean();
 		$pdo     = $adapter->getDatabase();
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$adapter->exec( "DROP TABLE IF EXISTS testtable" );
 
@@ -55,7 +65,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 			}
 		}
 
-		asrt( $writer->code( RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_DATETIME ), 99 );
+		asrt( $writer->code( PostgreSQL::C_DATATYPE_SPECIAL_DATETIME ), 99 );
 
 		asrt( $writer->code( "unknown" ), 99 );
 
@@ -76,9 +86,9 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 
 		asrt( $writer->scanType( "abc" ), 3 );
 
-		asrt( $writer->scanType( "2001-10-10", true ), RedBean_QueryWriter_MySQL::C_DATATYPE_SPECIAL_DATE );
+		asrt( $writer->scanType( "2001-10-10", true ), MySQL::C_DATATYPE_SPECIAL_DATE );
 
-		asrt( $writer->scanType( "2001-10-10 10:00:00", true ), RedBean_QueryWriter_MySQL::C_DATATYPE_SPECIAL_DATETIME );
+		asrt( $writer->scanType( "2001-10-10 10:00:00", true ), MySQL::C_DATATYPE_SPECIAL_DATETIME );
 
 		asrt( $writer->scanType( "2001-10-10 10:00:00" ), 3 );
 
@@ -136,7 +146,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 
 		testpack( "Test ANSI92 issue in clearrelations" );
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$book    = $redbean->dispense( "book" );
 		$author1 = $redbean->dispense( "author" );
@@ -167,7 +177,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 		$redbean = $toolbox->getRedBean();
 		$adapter = $toolbox->getDatabaseAdapter();
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$book = $redbean->dispense( "book" );
 
@@ -198,7 +208,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 			$a->associate( $group, $book );
 
 			pass();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			fail();
 		}
 
@@ -207,7 +217,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 			$a->associate( $group, $book );
 
 			pass();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			fail();
 		}
 
@@ -227,7 +237,7 @@ class RedUNIT_Postgres_Writer extends RedUNIT_Postgres
 		$toolbox = R::$toolbox;
 		$redbean = $toolbox->getRedBean();
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$book    = $redbean->dispense( "book" );
 		$author1 = $redbean->dispense( "author" );

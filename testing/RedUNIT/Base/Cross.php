@@ -1,6 +1,20 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\AssociationManager;
+use RedBean\RException\SQL;
+
 /**
- * RedUNIT_Base_Cross
+ * Cross
  *
  * @file    RedUNIT/Base/Cross.php
  * @desc    Tests associations within the same table (i.e. page_page2 alike)
@@ -12,7 +26,7 @@
  * with this source code in the file license.txt.
  */
 
-class RedUNIT_Base_Cross extends RedUNIT_Base
+class Cross extends Base
 {
 	/**
 	 * Test self referential N-M relations (page_page).
@@ -26,7 +40,7 @@ class RedUNIT_Base_Cross extends RedUNIT_Base
 		$writer  = $toolbox->getWriter();
 		$redbean = $toolbox->getRedBean();
 		$pdo     = $adapter->getDatabase();
-		$a       = new RedBean_AssociationManager( $toolbox );
+		$a       = new AssociationManager( $toolbox );
 
 		$page = $redbean->dispense( "page" );
 
@@ -88,7 +102,7 @@ class RedUNIT_Base_Cross extends RedUNIT_Base
 			$a->associate( $page2, $page2 );
 
 			pass();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			fail();
 		}
 

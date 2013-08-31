@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Base_Copy
+ * Copy
  *
  * @file    RedUNIT/Base/Copy.php
  * @desc    Tests whether we can make a deep copy of a bean.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Copy extends RedUNIT_Base
+class Copy extends Base
 {
 	/**
 	 * Test whether recursion happens
@@ -204,7 +217,7 @@ class RedUNIT_Base_Copy extends RedUNIT_Base
 
 		$ids = array();
 
-		asrt( ( $d instanceof RedBean_OODBBean ), true );
+		asrt( ( $d instanceof OODBBean ), true );
 		asrt( count( $d->ownPage ), 1 );
 
 		foreach ( end( $d->ownPage )->ownParagraph as $p ) {

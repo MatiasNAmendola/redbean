@@ -1,12 +1,22 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Plugin;
+use RedBean\OODB;
+use RedBean\QueryWriter;
+use RedBean\RException\Security;
+use RedBean\Facade;
+use RedBean\QueryWriter\SQLiteT;
+use RedBean\Toolbox;
+
 /**
  * Syncs schemas
  *
  * @file    RedBean/Plugin/Sync.php
  * @desc    Plugin for Synchronizing databases.
- *
- * @plugin  public static function syncSchema($from, $to) { return RedBean_Plugin_Sync::syncSchema($from, $to); }
- *
  * @author  Gabor de Mooij and the RedBeanPHP Community
  * @license BSD/GPLv2
  *
@@ -14,20 +24,20 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_Sync implements RedBean_Plugin
+class Sync implements Plugin
 {
 	/**
-	 * @var RedBean_OODB
+	 * @var OODB
 	 */
 	private $oodb;
 
 	/**
-	 * @var RedBean_QueryWriter
+	 * @var QueryWriter
 	 */
 	private $sourceWriter;
 
 	/**
-	 * @var RedBean_QueryWriter
+	 * @var QueryWriter
 	 */
 	private $targetWriter;
 
@@ -55,7 +65,7 @@ class RedBean_Plugin_Sync implements RedBean_Plugin
 	 * @var integer
 	 */
 	private $defaultCode;
-
+	
 	/**
 	 * Performs a database schema sync. For use with facade.
 	 * Instead of toolboxes this method accepts simply string keys and is static.
@@ -65,20 +75,20 @@ class RedBean_Plugin_Sync implements RedBean_Plugin
 	 *
 	 * @return void
 	 *
-	 * @throws RedBean_Exception_Security
+	 * @throws Security
 	 */
 	public static function syncSchema( $database1, $database2 )
 	{
-		if ( !isset( RedBean_Facade::$toolboxes[$database1] ) ) {
-			throw new RedBean_Exception_Security( 'No database for this key: ' . $database1 );
+		if ( !isset( Facade::$toolboxes[$database1] ) ) {
+			throw new Security( 'No database for this key: ' . $database1 );
 		}
 
-		if ( !isset( RedBean_Facade::$toolboxes[$database2] ) ) {
-			throw new RedBean_Exception_Security( 'No database for this key: ' . $database2 );
+		if ( !isset( Facade::$toolboxes[$database2] ) ) {
+			throw new Security( 'No database for this key: ' . $database2 );
 		}
 
-		$db1  = RedBean_Facade::$toolboxes[$database1];
-		$db2  = RedBean_Facade::$toolboxes[$database2];
+		$db1  = Facade::$toolboxes[$database1];
+		$db2  = Facade::$toolboxes[$database2];
 
 		$sync = new self;
 
@@ -116,7 +126,7 @@ class RedBean_Plugin_Sync implements RedBean_Plugin
 		}
 
 		// Fix narrow translations SQLiteT stores date as double. (double != really double)
-		if ( get_class( $this->sourceWriter ) === 'RedBean_QueryWriter_SQLiteT' ) {
+		if ( get_class( $this->sourceWriter ) === 'SQLiteT' ) {
 			// Use magic number in case writer not loaded.
 			$this->translations[1] = $this->defaultCode;
 		}
@@ -156,6 +166,12 @@ class RedBean_Plugin_Sync implements RedBean_Plugin
 					$targetCode = $this->targetWriter->getTypeForID();
 				} else {
 					$sourceCode = $this->sourceWriter->code( $sourceType, true );
+					
+					var_dump($sourceType);
+					
+					var_dump($sourceCode);
+					
+					
 					$targetCode = ( isset( $this->translations[$sourceCode] ) ) ? $this->translations[$sourceCode] : $this->defaultCode;
 				}
 
@@ -203,12 +219,12 @@ class RedBean_Plugin_Sync implements RedBean_Plugin
 	/**
 	 * Initializes the Sync plugin for usage.
 	 *
-	 * @param RedBean_Toolbox $source toolbox of source database
-	 * @param RedBean_Toolbox $target toolbox of target database
+	 * @param Toolbox $source toolbox of source database
+	 * @param Toolbox $target toolbox of target database
 	 *
 	 * @return void
 	 */
-	private function initialize( RedBean_Toolbox $source, RedBean_Toolbox $target )
+	private function initialize( Toolbox $source, Toolbox $target )
 	{
 		$this->oodb          = $target->getRedBean();
 
@@ -227,12 +243,12 @@ class RedBean_Plugin_Sync implements RedBean_Plugin
 	 * schema of target database and feeds this sql code to the
 	 * adapter of the target database.
 	 *
-	 * @param RedBean_Toolbox $source toolbox of source database
-	 * @param RedBean_Toolbox $target toolbox of target database
+	 * @param Toolbox $source toolbox of source database
+	 * @param Toolbox $target toolbox of target database
 	 *
 	 * @return void
 	 */
-	public function doSync( RedBean_Toolbox $source, RedBean_Toolbox $target )
+	public function doSync( Toolbox $source, Toolbox $target )
 	{
 		$this->initialize( $source, $target );
 

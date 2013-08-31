@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Base_Preloading
+ * Preloading
  *
  * @file    RedUNIT/Base/Preloading.php
  * @desc    Tests eager loading for parent beans.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Preloading extends RedUNIT_Base
+class Preloading extends Base
 {
 	/**
 	 * Test Preload save.
@@ -71,7 +84,7 @@ class RedUNIT_Base_Preloading extends RedUNIT_Base
 			}
 		}
 
-		asrt( ( $foundMagazine instanceof RedBean_OODBBean ), true );
+		asrt( ( $foundMagazine instanceof OODBBean ), true );
 
 		asrt( count( $foundMagazine->ownPage ), 2 );
 

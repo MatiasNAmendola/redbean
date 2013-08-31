@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_Base_Aliasing
+ * Aliasing
  *
  * @file    RedUNIT/Base/Aliasing.php
  * @desc    Tests for nested beans with aliases, i.e. teacher alias for person etc.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Aliasing extends RedUNIT_Base
+class Aliasing extends Base
 {
 
 	/**
@@ -247,9 +260,9 @@ class RedUNIT_Base_Aliasing extends RedUNIT_Base
 			$book->wrongProperty[] = $page;
 			R::store( $book );
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			fail();
 		}
 
@@ -291,7 +304,7 @@ class RedUNIT_Base_Aliasing extends RedUNIT_Base
 
 		foreach (
 			array(
-				new stdClass(), "a string", 1928, true, null, array()
+				new \stdClass(), "a string", 1928, true, null, array()
 			)
 			as $value
 		) {
@@ -305,9 +318,9 @@ class RedUNIT_Base_Aliasing extends RedUNIT_Base
 				R::store( $book );
 
 				fail();
-			} catch ( RedBean_Exception_Security $e ) {
+			} catch ( Security $e ) {
 				pass();
-			} catch ( Exception $e ) {
+			} catch (\Exception $e ) {
 				fail();
 			}
 		}

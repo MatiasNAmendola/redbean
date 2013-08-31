@@ -1,6 +1,11 @@
 <?php
+
+namespace RedUNIT\Sqlite;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
 /**
- * RedUNIT_Sqlite_Foreignkeys
+ * Foreignkeys
  *
  * @file    RedUNIT/Sqlite/Foreignkeys.php
  * @desc    Tests the creation of foreign keys.
@@ -11,7 +16,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Sqlite_Foreignkeys extends RedUNIT_Sqlite
+class Foreignkeys extends \RedUNIT\Sqlite
 {
 	/**
 	 * Test foreign keys with SQLite.

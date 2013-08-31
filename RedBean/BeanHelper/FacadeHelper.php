@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean\BeanHelper;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\BeanHelper;
+use RedBean\Facade;
+use RedBean\OODBBean;
+use RedBean\ModelHelper;
+
 /**
  * Bean Helper.
  * The Bean helper helps beans to access access the toolbox and
@@ -14,36 +24,36 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_BeanHelper_Facade implements RedBean_BeanHelper
+class FacadeHelper implements BeanHelper
 {
 
 	/**
-	 * @see RedBean_BeanHelper::getToolbox
+	 * @see BeanHelper::getToolbox
 	 */
 	public function getToolbox()
 	{
-		return RedBean_Facade::$toolbox;
+		return Facade::$toolbox;
 	}
 
 	/**
-	 * @see RedBean_BeanHelper::getModelForBean
+	 * @see BeanHelper::getModelForBean
 	 */
-	public function getModelForBean( RedBean_OODBBean $bean )
+	public function getModelForBean( OODBBean $bean )
 	{
-		$modelName = RedBean_ModelHelper::getModelName( $bean->getMeta( 'type' ), $bean );
+		$modelName = ModelHelper::getModelName( $bean->getMeta( 'type' ), $bean );
 
 		if ( !class_exists( $modelName ) ) {
 			return null;
 		}
 
-		$obj = RedBean_ModelHelper::factory( $modelName );
+		$obj = ModelHelper::factory( $modelName );
 		$obj->loadBean( $bean );
 
 		return $obj;
 	}
 
 	/**
-	 * @see RedBean_BeanHelper::getExtractedToolbox
+	 * @see BeanHelper::getExtractedToolbox
 	 */
 	public function getExtractedToolbox()
 	{

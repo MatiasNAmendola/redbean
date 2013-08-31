@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Plugin;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Plugin_Export
+ * Export
  *
  * @file    RedUNIT/Plugin/Export.php
  * @desc    Tests export functions for beans.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Plugin_Export extends RedUNIT_Plugin
+class Export extends \RedUNIT\Plugin
 {
 	
 	/**

@@ -1,6 +1,11 @@
 <?php
+
+namespace RedUNIT\Mysql;
+
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Mysql_Double
+ * Double
  *
  * @file    RedUNIT/Mysql/Double.php
  * @desc    Tests handling of double precision values.
@@ -11,7 +16,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Mysql_Double extends RedUNIT_Mysql
+class Double extends \RedUNIT\Mysql
 {
 	/**
 	 * Test storage of doubles.

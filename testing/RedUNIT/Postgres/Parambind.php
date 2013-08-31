@@ -1,9 +1,15 @@
 <?php
+
+namespace RedUNIT\Postgres;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Postgres_Parambind
+ * Parambind
  *
  * @file    RedUNIT/Postgres/Parambind.php
- * @desc    Tests PDO parameter binding for Postgres.
+ * @desc    Tests\PDO parameter binding for Postgres.
  * @author  Gabor de Mooij and the RedBeanPHP Community
  * @license New BSD/GPLv2
  *
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Postgres_Parambind extends RedUNIT_Postgres
+class Parambind extends \RedUNIT\Postgres
 {
 	/**
 	 * Test parameter binding.

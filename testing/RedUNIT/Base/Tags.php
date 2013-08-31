@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\RException;
+
 /**
- * RedUNIT_Base_Tags
+ * Tags
  *
  * @file    RedUNIT/Base/Tags.php
  * @desc    Tests the tagging of beans.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Tags extends RedUNIT_Base
+class Tags extends Base
 {
 	/**
 	 * Some basic tests.
@@ -75,7 +88,7 @@ class RedUNIT_Base_Tags extends RedUNIT_Base
 			R::tag( $blog, array( "smart", "interesting", "lousy!" ) );
 
 			pass();
-		} catch ( RedBean_Exception $e ) {
+		} catch ( RException $e ) {
 			fail();
 		}
 

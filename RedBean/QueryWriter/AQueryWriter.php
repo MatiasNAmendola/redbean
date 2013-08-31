@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean\QueryWriter;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Adapter\DBAdapter;
+use RedBean\RException\Security;
+use RedBean\QueryWriter;
+use RedBean\OODBBean;
+
 /**
  * RedBean Abstract Query Writer
  *
@@ -16,9 +26,9 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - otherwise coverage software does not understand.
+abstract class AQueryWriter { //bracket must be here - otherwise coverage software does not understand.
 	/**
-	 * @var RedBean_Adapter_DBAdapter
+	 * @var DBAdapter
 	 */
 	protected $adapter;
 
@@ -277,12 +287,12 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	 *
 	 * @return string
 	 *
-	 * @throws RedBean_Exception_Security
+	 * @throws Security
 	 */
 	protected function check( $struct )
 	{
 		if ( !preg_match( '/^[a-zA-Z0-9_]+$/', $struct ) ) {
-			throw new RedBean_Exception_Security( 'Identifier does not conform to RedBeanPHP security policies.' );
+			throw new Security( 'Identifier does not conform to RedBeanPHP security policies.' );
 		}
 
 		return $struct;
@@ -301,7 +311,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::getAssocTableFormat
+	 * @see QueryWriter::getAssocTableFormat
 	 */
 	public static function getAssocTableFormat( $types )
 	{
@@ -313,7 +323,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::renameAssociation
+	 * @see QueryWriter::renameAssociation
 	 */
 	public static function renameAssociation( $from, $to = null )
 	{
@@ -410,7 +420,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::esc
+	 * @see QueryWriter::esc
 	 */
 	public function esc( $dbStructure, $dontQuote = false )
 	{
@@ -420,7 +430,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addColumn
+	 * @see QueryWriter::addColumn
 	 */
 	public function addColumn( $type, $column, $field )
 	{
@@ -435,7 +445,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::updateRecord
+	 * @see QueryWriter::updateRecord
 	 */
 	public function updateRecord( $type, $updatevalues, $id = null )
 	{
@@ -476,7 +486,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::queryRecord
+	 * @see QueryWriter::queryRecord
 	 */
 	public function queryRecord( $type, $conditions = array(), $addSql = null, $bindings = array() )
 	{
@@ -506,7 +516,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::queryRecordRelated
+	 * @see QueryWriter::queryRecordRelated
 	 */
 	public function queryRecordRelated( $sourceType, $destType, $linkIDs, $addSql = '', $bindings = array() )
 	{
@@ -559,7 +569,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::queryRecordLinks
+	 * @see QueryWriter::queryRecordLinks
 	 */
 	public function queryRecordLinks( $sourceType, $destType, $linkIDs, $addSql = '', $bindings = array() )
 	{
@@ -606,7 +616,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::queryRecordLink
+	 * @see QueryWriter::queryRecordLink
 	 */
 	public function queryRecordLink( $sourceType, $destType, $sourceID, $destID )
 	{
@@ -635,7 +645,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::queryRecordCount
+	 * @see QueryWriter::queryRecordCount
 	 */
 	public function queryRecordCount( $type, $conditions = array(), $addSql = null, $bindings = array() )
 	{
@@ -650,7 +660,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::queryRecordCountRelated
+	 * @see QueryWriter::queryRecordCountRelated
 	 */
 	public function queryRecordCountRelated( $sourceType, $destType, $linkID, $addSql = '', $bindings = array() )
 	{
@@ -681,7 +691,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::deleteRecord
+	 * @see QueryWriter::deleteRecord
 	 */
 	public function deleteRecord( $type, $conditions = array(), $addSql = null, $bindings = array() )
 	{
@@ -696,7 +706,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::deleteRelations
+	 * @see QueryWriter::deleteRelations
 	 */
 	public function deleteRelations( $sourceType, $destType, $sourceID )
 	{
@@ -718,7 +728,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 	
 	/**
-	 * @see RedBean_QueryWriter::widenColumn
+	 * @see QueryWriter::widenColumn
 	 */
 	public function widenColumn( $type, $column, $datatype )
 	{
@@ -736,7 +746,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::wipe
+	 * @see QueryWriter::wipe
 	 */
 	public function wipe( $type )
 	{
@@ -746,7 +756,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addFK
+	 * @see QueryWriter::addFK
 	 */
 	public function addFK( $type, $targetType, $field, $targetField, $isDependent = false )
 	{
@@ -792,13 +802,13 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 				ADD CONSTRAINT $cName FOREIGN KEY $fkName (  $column ) REFERENCES  $targetTable (
 				$targetColumn) ON DELETE " . ( $isDependent ? 'CASCADE' : 'SET NULL' ) . ' ON UPDATE SET NULL ;' );
 			}
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			// Failure of fk-constraints is not a problem
 		}
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::renameAssocTable
+	 * @see QueryWriter::renameAssocTable
 	 */
 	public function renameAssocTable( $from, $to = null )
 	{
@@ -806,7 +816,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::getAssocTable
+	 * @see QueryWriter::getAssocTable
 	 */
 	public function getAssocTable( $types )
 	{
@@ -814,7 +824,7 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addConstraintForTypes
+	 * @see QueryWriter::addConstraintForTypes
 	 */
 	public function addConstraintForTypes( $sourceType, $destType )
 	{
@@ -876,12 +886,12 @@ abstract class RedBean_QueryWriter_AQueryWriter { //bracket must be here - other
 	/**
 	 * @deprecated Use addContraintForTypes instead.
 	 *
-	 * @param RedBean_OODBBean $bean1 bean
-	 * @param RedBean_OODBBean $bean2 bean
+	 * @param OODBBean $bean1 bean
+	 * @param OODBBean $bean2 bean
 	 *
 	 * @return void
 	 */
-	public function addConstraint( RedBean_OODBBean $bean1, RedBean_OODBBean $bean2 )
+	public function addConstraint( OODBBean $bean1, OODBBean $bean2 )
 	{
 		$this->addConstraintForTypes( $bean1->getMeta( 'type' ), $bean2->getMeta( 'type' ) );
 	}

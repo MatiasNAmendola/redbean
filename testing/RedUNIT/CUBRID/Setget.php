@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\CUBRID;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_CUBRID_Setget
+ * Setget
  *
  * @file    RedUNIT/CUBRID/Setget.php
  * @desc    Tests whether values are stored correctly.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_CUBRID_Setget extends RedUNIT_CUBRID
+class Setget extends \RedUNIT\CUBRID
 {
 	/**
 	 * Test numbers.
@@ -122,10 +129,10 @@ class RedUNIT_CUBRID_Setget extends RedUNIT_CUBRID
 			R::$writer->esc( '`aaa`' );
 
 			fail();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 
-		asrt( ( $e instanceof RedBean_Exception_Security ), true );
+		asrt( ( $e instanceof Security ), true );
 	}
 }

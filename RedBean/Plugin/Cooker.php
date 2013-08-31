@@ -1,11 +1,19 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Plugin;
+use RedBean\Toolbox;
+use RedBean\OODB;
+use RedBean\OODBBean;
+use RedBean\RException\Security;
+
 /**
  * RedBean Cooker
  *
  * @file    RedBean/Cooker.php
- *
- * @plugin  public static function graph($array, $filterEmpty=false) { $c = new RedBean_Plugin_Cooker(); $c->setToolbox(self::$toolbox);return $c->graph($array, $filterEmpty);}
- *
  * @desc    Turns arrays into bean collections for easy persistence.
  * @author  Gabor de Mooij and the RedBeanPHP Community
  * @license BSD/GPLv2
@@ -14,7 +22,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_Cooker implements RedBean_Plugin
+class Cooker implements Plugin
 {
 	/**
 	 * @var boolean
@@ -27,12 +35,12 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 	private static $useNULLForEmptyString = false;
 
 	/**
-	 * @var RedBean_Toolbox
+	 * @var Toolbox
 	 */
 	private $toolbox;
 
 	/**
-	 * @var RedBean_OODB
+	 * @var OODB
 	 */
 	private $redbean;
 
@@ -65,11 +73,11 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 	/**
 	 * Sets the toolbox to be used by graph()
 	 *
-	 * @param RedBean_Toolbox $toolbox toolbox
+	 * @param Toolbox $toolbox toolbox
 	 *
 	 * @return void
 	 */
-	public function setToolbox( RedBean_Toolbox $toolbox )
+	public function setToolbox( Toolbox $toolbox )
 	{
 		$this->toolbox = $toolbox;
 		$this->redbean = $this->toolbox->getRedbean();
@@ -81,9 +89,9 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 	 * @param array   $array       data array to import as a bean
 	 * @param boolean $filterEmpty if TRUE empty STRING values are converted to NULL (default FALSE)
 	 *
-	 * @return RedBean_OODBBean
+	 * @return OODBBean
 	 *
-	 * @throws RedBean_Exception_Security
+	 * @throws Security
 	 */
 	private function loadBean( &$array, $filterEmpty )
 	{
@@ -95,7 +103,7 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 			if ( self::$loadBeans ) {
 				$bean = $this->redbean->load( $type, (int) $array['id'] );
 			} else {
-				throw new RedBean_Exception_Security( 'Attempt to load a bean in Cooker. Use enableBeanLoading to override but please read security notices first.' );
+				throw new Security( 'Attempt to load a bean in Cooker. Use enableBeanLoading to override but please read security notices first.' );
 			}
 		} else {
 			$bean = $this->redbean->dispense( $type );
@@ -120,7 +128,7 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 	 *
 	 * @return array
 	 *
-	 * @throws RedBean_Exception_Security
+	 * @throws Security
 	 */
 	private function loadList( &$array, $filterEmpty )
 	{
@@ -128,8 +136,8 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 		foreach ( $array as $key => $value ) {
 			$listBean = $this->graph( $value, $filterEmpty );
 
-			if ( !( $listBean instanceof RedBean_OODBBean ) ) {
-				throw new RedBean_Exception_Security( 'Expected bean but got :' . gettype( $listBean ) );
+			if ( !( $listBean instanceof OODBBean ) ) {
+				throw new Security( 'Expected bean but got :' . gettype( $listBean ) );
 			}
 
 			if ( $listBean->isEmpty() ) {
@@ -181,7 +189,7 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 	 *
 	 * @return    array
 	 *
-	 * @throws RedBean_Exception_Security
+	 * @throws Security
 	 */
 	public function graph( $array, $filterEmpty = false )
 	{
@@ -190,7 +198,7 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin
 		} elseif ( is_array( $array ) ) {
 			return $this->loadList( $array, $filterEmpty );
 		} else {
-			throw new RedBean_Exception_Security( 'Expected array but got :' . gettype( $array ) );
+			throw new Security( 'Expected array but got :' . gettype( $array ) );
 		}
 	}
 

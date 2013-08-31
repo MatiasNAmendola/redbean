@@ -1,5 +1,10 @@
 <?php
 
+namespace RedUNIT;
+
+use \RedBean\Facade as R;
+use \RedBean\ModelHelper;
+
 /**
  * RedUNIT
  * Base class for RedUNIT, the micro unit test suite for RedBeanPHP
@@ -33,7 +38,7 @@ abstract class RedUNIT
 	{
 		R::freeze( false );
 
-		RedBean_ModelHelper::setModelFormatter( new DefaultModelFormatter );
+		ModelHelper::setModelFormatter( new \DefaultModelFormatter );
 
 		R::nuke();
 	}
@@ -43,11 +48,11 @@ abstract class RedUNIT
 	 */
 	public function run()
 	{
-		$class = new ReflectionClass( $this );
+		$class = new \ReflectionClass( $this );
 
 		$skip = array( 'run', 'getTargetDrivers', 'onEvent');
 		// Call all methods except run automatically
-		foreach ( $class->getMethods(ReflectionMethod::IS_PUBLIC) as $method ) {
+		foreach ( $class->getMethods( \ReflectionMethod::IS_PUBLIC ) as $method ) {
 			// Skip methods inherited from parent class
 			if ( $method->class != $class->getName() ) continue;
 
@@ -63,7 +68,7 @@ abstract class RedUNIT
 
 			try {
 				R::nuke();
-			} catch( PDOException $e ) {
+			} catch( \PDOException $e ) {
 				// Some tests use a broken database on purpose, so an exception is ok
 			}
 		}

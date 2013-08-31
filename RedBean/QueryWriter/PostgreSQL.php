@@ -1,4 +1,15 @@
 <?php
+
+namespace RedBean\QueryWriter;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\QueryWriter\AQueryWriter;
+use RedBean\QueryWriter;
+use RedBean\Adapter\DBAdapter;
+use RedBean\Adapter;
+use RedBean\Driver\PDO\NULL;
+
 /**
  * RedBean PostgreSQL Query Writer
  *
@@ -11,7 +22,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter implements RedBean_QueryWriter
+class PostgreSQL extends AQueryWriter implements QueryWriter
 {
 	/**
 	 * Data types
@@ -28,7 +39,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	const C_DATATYPE_SPECIFIED        = 99;
 
 	/**
-	 * @var RedBean_Adapter_DBAdapter
+	 * @var DBAdapter
 	 */
 	protected $adapter;
 
@@ -101,7 +112,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 			}
 
 			return true;
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			return false;
 		}
 	}
@@ -109,9 +120,9 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	/**
 	 * Constructor
 	 *
-	 * @param RedBean_Adapter $adapter Database Adapter
+	 * @param Adapter $adapter Database Adapter
 	 */
-	public function __construct( RedBean_Adapter $adapter )
+	public function __construct( Adapter $adapter )
 	{
 		$this->typeno_sqltype = array(
 			self::C_DATATYPE_INTEGER          => ' integer ',
@@ -146,7 +157,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::getTables
+	 * @see QueryWriter::getTables
 	 */
 	public function getTables()
 	{
@@ -154,7 +165,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::createTable
+	 * @see QueryWriter::createTable
 	 */
 	public function createTable( $table )
 	{
@@ -164,7 +175,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::getColumns
+	 * @see QueryWriter::getColumns
 	 */
 	public function getColumns( $table )
 	{
@@ -181,7 +192,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::scanType
+	 * @see QueryWriter::scanType
 	 */
 	public function scanType( $value, $flagSpecial = false )
 	{
@@ -189,27 +200,27 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 
 		if ( $flagSpecial && $value ) {
 			if ( preg_match( '/^\d{4}\-\d\d-\d\d$/', $value ) ) {
-				return RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_DATE;
+				return PostgreSQL::C_DATATYPE_SPECIAL_DATE;
 			}
 
 			if ( preg_match( '/^\d{4}\-\d\d-\d\d\s\d\d:\d\d:\d\d(\.\d{1,6})?$/', $value ) ) {
-				return RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_DATETIME;
+				return PostgreSQL::C_DATATYPE_SPECIAL_DATETIME;
 			}
 
 			if ( preg_match( '/^\([\d\.]+,[\d\.]+\)$/', $value ) ) {
-				return RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_POINT;
+				return PostgreSQL::C_DATATYPE_SPECIAL_POINT;
 			}
 
 			if ( preg_match( '/^\[\([\d\.]+,[\d\.]+\),\([\d\.]+,[\d\.]+\)\]$/', $value ) ) {
-				return RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_LSEG;
+				return PostgreSQL::C_DATATYPE_SPECIAL_LSEG;
 			}
 
 			if ( preg_match( '/^\<\([\d\.]+,[\d\.]+\),[\d\.]+\>$/', $value ) ) {
-				return RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_CIRCLE;
+				return PostgreSQL::C_DATATYPE_SPECIAL_CIRCLE;
 			}
 
 			if ( preg_match( '/^\-?\$\d+/', $value ) ) {
-				return RedBean_QueryWriter_PostgreSQL::C_DATATYPE_SPECIAL_MONEY;
+				return PostgreSQL::C_DATATYPE_SPECIAL_MONEY;
 			}
 		}
 
@@ -219,7 +230,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 			return self::C_DATATYPE_TEXT;
 		}
 
-		if ( $value === null || ( $value instanceof RedBean_Driver_PDO_NULL ) || ( is_numeric( $value )
+		if ( $value === null || ( $value instanceof NULL ) || ( is_numeric( $value )
 				&& floor( $value ) == $value
 				&& $value < 2147483648
 				&& $value > -2147483648 )
@@ -233,7 +244,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::code
+	 * @see QueryWriter::code
 	 */
 	public function code( $typedescription, $includeSpecials = false )
 	{
@@ -247,7 +258,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::widenColumn
+	 * @see QueryWriter::widenColumn
 	 */
 	public function widenColumn( $type, $column, $datatype )
 	{
@@ -263,7 +274,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addUniqueIndex
+	 * @see QueryWriter::addUniqueIndex
 	 */
 	public function addUniqueIndex( $table, $columns )
 	{
@@ -302,21 +313,21 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::sqlStateIn
+	 * @see QueryWriter::sqlStateIn
 	 */
 	public function sqlStateIn( $state, $list )
 	{
 		$stateMap = array(
-			'42P01' => RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_TABLE,
-			'42703' => RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,
-			'23505' => RedBean_QueryWriter::C_SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATION
+			'42P01' => QueryWriter::C_SQLSTATE_NO_SUCH_TABLE,
+			'42703' => QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,
+			'23505' => QueryWriter::C_SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATION
 		);
 
 		return in_array( ( isset( $stateMap[$state] ) ? $stateMap[$state] : '0' ), $list );
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addIndex
+	 * @see QueryWriter::addIndex
 	 */
 	public function addIndex( $type, $name, $column )
 	{
@@ -332,12 +343,12 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 
 		try {
 			$this->adapter->exec( "CREATE INDEX $name ON $table ($column) " );
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 		}
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::addFK
+	 * @see QueryWriter::addFK
 	 */
 	public function addFK( $type, $targetType, $field, $targetField, $isDep = false )
 	{
@@ -397,13 +408,13 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 			}
 
 			return false;
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			return false;
 		}
 	}
 
 	/**
-	 * @see RedBean_QueryWriter::wipeAll
+	 * @see QueryWriter::wipeAll
 	 */
 	public function wipeAll()
 	{

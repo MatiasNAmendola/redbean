@@ -1,6 +1,9 @@
 <?php
+
+namespace RedUNIT;
+
 /**
- * RedUNIT_CUBRID
+ * CUBRID
  *
  * @file    RedUNIT/CUBRID.php
  * @desc    Base class for all test classes that aim to test the CUBRID database support.
@@ -11,7 +14,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_CUBRID extends RedUNIT
+class CUBRID extends RedUNIT
 {
 	/*
 	 * What drivers should be loaded for this test pack?

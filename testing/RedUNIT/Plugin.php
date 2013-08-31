@@ -1,6 +1,9 @@
 <?php
+
+namespace RedUNIT;
+
 /**
- * RedUNIT_Plugin
+ * Plugin
  *
  * @file    RedUNIT/Plugin.php
  * @desc    Base class for all plugin tests.
@@ -11,7 +14,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Plugin extends RedUNIT
+class Plugin extends RedUNIT
 {
 	/**
 	 * What drivers should be loaded for this test pack?

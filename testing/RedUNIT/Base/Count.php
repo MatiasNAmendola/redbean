@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\RException\SQL;
+
 /**
- * RedUNIT_Base_Count
+ * Count
  *
  * @file    RedUNIT/Base/Count.php
  * @desc    Tests for simple bean counting.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Count extends RedUNIT_Base
+class Count extends Base
 {
 	/**
 	 * Test count and wipe.
@@ -77,7 +90,7 @@ class RedUNIT_Base_Count extends RedUNIT_Base
 			try {
 				R::count( 'teaport', ' for tea ' );
 				fail();
-			} catch ( RedBean_Exception_SQL $e ) {
+			} catch ( SQL $e ) {
 				pass();
 			}
 		}

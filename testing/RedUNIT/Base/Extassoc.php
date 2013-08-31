@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\AssociationManager\ExtAssociationManager;
+
 /**
- * RedUNIT_Base_Extassoc
+ * Extassoc
  *
  * @file    RedUNIT/Base/Extassoc.php
  * @desc    Tests extended associations, associations with additional properties in
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Extassoc extends RedUNIT_Base
+class Extassoc extends Base
 {
 	/**
 	 * Test extended associations.
@@ -44,7 +57,7 @@ class RedUNIT_Base_Extassoc extends RedUNIT_Base
 
 		$bottom->position = "bottom";
 
-		$ea = new RedBean_AssociationManager_ExtAssociationManager( $toolbox );
+		$ea = new ExtAssociationManager( $toolbox );
 
 		$ea->extAssociate( $ad, $webpage, $top );
 

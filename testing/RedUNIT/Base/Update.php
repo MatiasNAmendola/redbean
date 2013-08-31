@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_Base_Update
+ * Update
  *
  * @file    RedUNIT/Base/Update.php
  * @desc    Tests basic storage features through OODB class.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Update extends RedUNIT_Base
+class Update extends Base
 {
 	
 	/**
@@ -47,7 +60,7 @@ class RedUNIT_Base_Update extends RedUNIT_Base
 		try {
 			R::store( array() );
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -265,7 +278,7 @@ class RedUNIT_Base_Update extends RedUNIT_Base
 			$redbean->trash( array() );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 

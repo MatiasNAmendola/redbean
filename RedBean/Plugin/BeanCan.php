@@ -1,4 +1,13 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Plugin;
+use RedBean\ModelHelper;
+use RedBean\Facade;
+
 /**
  * BeanCan Server.
  * A JSON-RPC/RESTy server for RedBeanPHP.
@@ -16,7 +25,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_BeanCan implements RedBean_Plugin
+class BeanCan implements Plugin
 {
 	/**
 	 * List of JSON RPC2 error code definitions.
@@ -29,7 +38,7 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 	const C_JSONRPC2_SPECIFIED_ERROR    = -32099;
 
 	/**
-	 * @var RedBean_ModelHelper
+	 * @var ModelHelper
 	 */
 	private $modelHelper;
 
@@ -43,7 +52,7 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 	 */
 	public function __construct()
 	{
-		$this->modelHelper = new RedBean_ModelHelper;
+		$this->modelHelper = new ModelHelper;
 	}
 
 	/**
@@ -92,14 +101,14 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 		$data = $data[0];
 
 		if ( !isset( $data['id'] ) ) {
-			$bean = RedBean_Facade::dispense( $beanType );
+			$bean = Facade::dispense( $beanType );
 		} else {
-			$bean = RedBean_Facade::load( $beanType, $data['id'] );
+			$bean = Facade::load( $beanType, $data['id'] );
 		}
 
 		$bean->import( $data );
 
-		$rid = RedBean_Facade::store( $bean );
+		$rid = Facade::store( $bean );
 
 		return $this->resp( $rid, $id );
 	}
@@ -119,7 +128,7 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 			return $this->resp( null, $id, self::C_JSONRPC2_INVALID_PARAMETERS, 'First param needs to be Bean ID' );
 		}
 
-		$bean = RedBean_Facade::load( $beanType, $data[0] );
+		$bean = Facade::load( $beanType, $data[0] );
 
 		return $this->resp( $bean->export(), $id );
 	}
@@ -139,9 +148,9 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 			return $this->resp( null, $id, self::C_JSONRPC2_INVALID_PARAMETERS, 'First param needs to be Bean ID' );
 		}
 
-		$bean = RedBean_Facade::load( $beanType, $data[0] );
+		$bean = Facade::load( $beanType, $data[0] );
 
-		RedBean_Facade::trash( $bean );
+		Facade::trash( $bean );
 
 		return $this->resp( 'OK', $id );
 	}
@@ -161,9 +170,9 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 			return $this->resp( null, $id, self::C_JSONRPC2_INVALID_PARAMETERS, 'First param needs to be Bean ID' );
 		}
 
-		$bean  = RedBean_Facade::load( $beanType, $data[0] );
+		$bean  = Facade::load( $beanType, $data[0] );
 
-		$array = RedBean_Facade::exportAll( array( $bean ), true );
+		$array = Facade::exportAll( array( $bean ), true );
 
 		return $this->resp( $array, $id );
 	}
@@ -251,7 +260,7 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 				default:
 					return $this->custom( $id, $beanType, $action, $data );
 			}
-		} catch ( Exception $exception ) {
+		} catch (\Exception $exception ) {
 			return $this->resp( null, $id, self::C_JSONRPC2_SPECIFIED_ERROR, $exception->getCode() . '-' . $exception->getMessage() );
 		}
 	}
@@ -262,7 +271,7 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 	 *
 	 * @param array|string $whitelist  a white list of beans and methods that should be accessible through the BeanCan Server.
 	 *
-	 * @return RedBean_Plugin_BeanCan
+	 * @return BeanCan
 	 */
 	public function setWhitelist( $whitelist )
 	{
@@ -347,13 +356,13 @@ class RedBean_Plugin_BeanCan implements RedBean_Plugin
 
 		try {
 			if ( count( $resourceInfo ) < 2 ) {
-				return $this->resp( RedBean_Facade::findAndExport( $type ) );
+				return $this->resp( Facade::findAndExport( $type ) );
 			} else {
 				$id = (int) $resourceInfo[1];
 
-				return $this->resp( RedBean_Facade::load( $type, $id )->export(), $id );
+				return $this->resp( Facade::load( $type, $id )->export(), $id );
 			}
-		} catch ( Exception $exception ) {
+		} catch (\Exception $exception ) {
 			return $this->resp( null, 0, self::C_JSONRPC2_SPECIFIED_ERROR );
 		}
 	}

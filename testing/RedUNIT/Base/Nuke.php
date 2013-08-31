@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Base_Nuke
+ * Nuke
  *
  * @file    RedUNIT/Base/Nuke.php
  * @desc    Test the nuke() function.
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Nuke extends RedUNIT_Base
+class Nuke extends Base
 {
 	/**
 	 * Nuclear test suite.

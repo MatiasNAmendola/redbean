@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+use RedUNIT\Blackhole;
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Blackhole_Version
+ * Version
  *
  * @file    RedUNIT/Blackhole/Version.php
  * @desc    Tests identification features.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Blackhole_Version extends RedUNIT_Blackhole
+class Version extends Blackhole
 {
 	/**
 	 * Test version info.

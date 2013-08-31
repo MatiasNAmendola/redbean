@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Oracle;
+
+use RedUNIT\Oracle;
+use RedBean\RedBean\Facade as R;
+
 /**
- * RedUNIT_Oracle_Base
+ * Base
  *
  * @file    RedUNIT/Oracle/Base.php
  * @desc    Basic tests for Oracle database.
@@ -12,7 +18,7 @@
  * with this source code in the file license.txt.
  */
 
-class RedUNIT_Oracle_Base extends RedUNIT_Oracle
+class Base extends Oracle
 {
 	/**
 	 * Various.

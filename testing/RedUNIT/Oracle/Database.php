@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Oracle;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Oracle; 
+use RedBean\RException\SQL;
+
 /**
- * RedUNIT_Oracle_Database
+ * Database
  *
  * @file    RedUNIT/Oracle/Database.php
  * @desc    Tests basic database behaviors
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Oracle_Database extends RedUNIT_Oracle
+class Database extends Oracle
 {
 	/**
 	 * Various tests for OCI.
@@ -32,7 +40,7 @@ class RedUNIT_Oracle_Database extends RedUNIT_Oracle
 			$adapter->exec( "an invalid query" );
 
 			fail();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			pass();
 		}
 

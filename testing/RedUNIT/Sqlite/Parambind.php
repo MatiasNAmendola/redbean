@@ -1,9 +1,15 @@
 <?php
+
+namespace RedUNIT\Sqlite;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Sqlite_Parambind
+ * Parambind
  *
  * @file    RedUNIT/Sqlite/Parambind.php
- * @desc    Tests PDO parameter binding.
+ * @desc    Tests\PDO parameter binding.
  * @author  Gabor de Mooij and the RedBeanPHP Community
  * @license New BSD/GPLv2
  *
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Sqlite_Parambind extends RedUNIT_Sqlite
+class Parambind extends \RedUNIT\Sqlite
 {
 	/**
 	 * Test parameter binding with SQLite.

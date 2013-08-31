@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Blackhole; 
+
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Blackhole_Meta
+ * Meta
  *
  * @file    RedUNIT/Blackhole/Meta.php
  * @desc    Tests meta data features on OODBBean class.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Blackhole_Meta extends RedUNIT_Blackhole
+class Meta extends Blackhole
 {
 	/**
 	 * Test meta data methods.
@@ -22,7 +35,7 @@ class RedUNIT_Blackhole_Meta extends RedUNIT_Blackhole
 	{
 		testpack( 'Test meta data' );
 
-		$bean = new RedBean_OODBBean;
+		$bean = new OODBBean;
 
 		$bean->setMeta( "this.is.a.custom.metaproperty", "yes" );
 
@@ -45,11 +58,11 @@ class RedUNIT_Blackhole_Meta extends RedUNIT_Blackhole
 		asrt( $bean->getMeta( "test.two" ), "second" );
 
 		// Copy Metadata
-		$bean = new RedBean_OODBBean;
+		$bean = new OODBBean;
 
 		$bean->setMeta( "meta.meta", "123" );
 
-		$bean2 = new RedBean_OODBBean;
+		$bean2 = new OODBBean;
 
 		asrt( $bean2->getMeta( "meta.meta" ), null );
 

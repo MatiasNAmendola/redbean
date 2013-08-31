@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Postgres;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Postgres_Setget
+ * Setget
  *
  * @file    RedUNIT/Postgres/Setget.php
  * @desc    Tests whether values are correctly stored.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Postgres_Setget extends RedUNIT_Postgres
+class Setget extends \RedUNIT\Postgres
 {
 	/**
 	 * Test numbers.

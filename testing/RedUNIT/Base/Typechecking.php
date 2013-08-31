@@ -1,6 +1,20 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\RException\Security;
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Base_Typechecking
+ * Typechecking
  *
  * @file    RedUNIT/Base/Typechecking.php
  * @desc    Tests basic bean validation rules; invalid bean handling.
@@ -11,7 +25,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Typechecking extends RedUNIT_Base
+class Typechecking extends Base
 {
 	
 	/**
@@ -33,7 +47,7 @@ class RedUNIT_Base_Typechecking extends RedUNIT_Base
 			$redbean->store( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -41,17 +55,17 @@ class RedUNIT_Base_Typechecking extends RedUNIT_Base
 			$redbean->check( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
-		$bean->name = new RedBean_OODBBean;
+		$bean->name = new OODBBean;
 
 		try {
 			$redbean->check( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -64,7 +78,7 @@ class RedUNIT_Base_Typechecking extends RedUNIT_Base
 			$redbean->store( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -72,7 +86,7 @@ class RedUNIT_Base_Typechecking extends RedUNIT_Base
 			$redbean->check( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -85,7 +99,7 @@ class RedUNIT_Base_Typechecking extends RedUNIT_Base
 			$redbean->store( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -93,7 +107,7 @@ class RedUNIT_Base_Typechecking extends RedUNIT_Base
 			$redbean->check( $bean );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 	}

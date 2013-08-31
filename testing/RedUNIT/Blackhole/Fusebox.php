@@ -1,6 +1,20 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Blackhole; 
+
+use RedBean\OODBBean;
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Blackhole_Fusebox
+ * Fusebox
  *
  * @file    RedUNIT/Blackhole/Fusebox.php
  * @desc    Tests Boxing/Unboxing of beans.
@@ -12,7 +26,7 @@
  * with this source code in the file license.txt.
  */
 
-class RedUNIT_Blackhole_Fusebox extends RedUNIT_Blackhole
+class Fusebox extends Blackhole
 {
 	/**
 	 * Test boxing.
@@ -37,9 +51,9 @@ class RedUNIT_Blackhole_Fusebox extends RedUNIT_Blackhole
 	 *
 	 * @param Model_Soup $soup
 	 */
-	private function giveMeSoup( Model_Soup $soup )
+	private function giveMeSoup( \Model_Soup $soup )
 	{
-		asrt( ( $soup instanceof Model_Soup ), true );
+		asrt( ( $soup instanceof \Model_Soup ), true );
 
 		asrt( 'A bit too salty', $soup->taste() );
 
@@ -49,26 +63,14 @@ class RedUNIT_Blackhole_Fusebox extends RedUNIT_Blackhole
 	/**
 	 * Test unboxing
 	 *
-	 * @param RedBean_OODBBean $bean
+	 * @param OODBBean $bean
 	 */
-	private function giveMeBean( RedBean_OODBBean $bean )
+	private function giveMeBean( OODBBean $bean )
 	{
-		asrt( ( $bean instanceof RedBean_OODBBean ), true );
+		asrt( ( $bean instanceof OODBBean ), true );
 
 		asrt( 'A bit too salty', $bean->taste() );
 
 		asrt( 'tomato', $bean->flavour );
-	}
-}
-
-/**
- * A model to box soup models :)
- */
-class Model_Soup extends RedBean_SimpleModel
-{
-
-	public function taste()
-	{
-		return 'A bit too salty';
 	}
 }

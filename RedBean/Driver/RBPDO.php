@@ -1,10 +1,21 @@
 <?php
+
+namespace RedBean\Driver;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Driver;
+use RedBean\Logger;
+use RedBean\QueryWriter\AQueryWriter;
+use RedBean\RException\SQL;
+use RedBean\Logger\LDefault;
+
 /**
- * PDO Driver
+ *\PDO Driver
  * This Driver implements the RedBean Driver API
  *
  * @file    RedBean/PDO.php
- * @desc    PDO Driver
+ * @desc   \PDO Driver
  * @author  Gabor de Mooij and the RedBeanPHP Community, Desfrenes
  * @license BSD/GPLv2
  *
@@ -12,7 +23,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Driver_PDO implements RedBean_Driver
+class RBPDO implements Driver
 {
 	/**
 	 * @var string
@@ -25,12 +36,12 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	protected $debug = false;
 
 	/**
-	 * @var RedBean_Logger
+	 * @var Logger
 	 */
 	protected $logger = null;
 
 	/**
-	 * @var PDO
+	 * @var\PDO
 	 */
 	protected $pdo;
 
@@ -65,11 +76,11 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	protected $mysqlEncoding = '';
 
 	/**
-	 * Binds parameters. This method binds parameters to a PDOStatement for
+	 * Binds parameters. This method binds parameters to a\PDOStatement for
 	 * Query Execution. This method binds parameters as NULL, INTEGER or STRING
 	 * and supports both named keys and question mark keys.
 	 *
-	 * @param  PDOStatement $statement  PDO Statement instance
+	 * @param \PDOStatement $statement \PDO Statement instance
 	 * @param  array        $bindings   values that need to get bound to the statement
 	 *
 	 * @return void
@@ -79,19 +90,19 @@ class RedBean_Driver_PDO implements RedBean_Driver
 		foreach ( $bindings as $key => &$value ) {
 			if ( is_integer( $key ) ) {
 				if ( is_null( $value ) ) {
-					$statement->bindValue( $key + 1, null, PDO::PARAM_NULL );
-				} elseif ( !$this->flagUseStringOnlyBinding && RedBean_QueryWriter_AQueryWriter::canBeTreatedAsInt( $value ) && $value < 2147483648 ) {
-					$statement->bindParam( $key + 1, $value, PDO::PARAM_INT );
+					$statement->bindValue( $key + 1, null,\PDO::PARAM_NULL );
+				} elseif ( !$this->flagUseStringOnlyBinding && AQueryWriter::canBeTreatedAsInt( $value ) && $value < 2147483648 ) {
+					$statement->bindParam( $key + 1, $value,\PDO::PARAM_INT );
 				} else {
-					$statement->bindParam( $key + 1, $value, PDO::PARAM_STR );
+					$statement->bindParam( $key + 1, $value,\PDO::PARAM_STR );
 				}
 			} else {
 				if ( is_null( $value ) ) {
-					$statement->bindValue( $key, null, PDO::PARAM_NULL );
-				} elseif ( !$this->flagUseStringOnlyBinding && RedBean_QueryWriter_AQueryWriter::canBeTreatedAsInt( $value ) && $value < 2147483648 ) {
-					$statement->bindParam( $key, $value, PDO::PARAM_INT );
+					$statement->bindValue( $key, null,\PDO::PARAM_NULL );
+				} elseif ( !$this->flagUseStringOnlyBinding && AQueryWriter::canBeTreatedAsInt( $value ) && $value < 2147483648 ) {
+					$statement->bindParam( $key, $value,\PDO::PARAM_INT );
 				} else {
-					$statement->bindParam( $key, $value, PDO::PARAM_STR );
+					$statement->bindParam( $key, $value,\PDO::PARAM_STR );
 				}
 			}
 		}
@@ -109,7 +120,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	 *
 	 * @return void
 	 *
-	 * @throws RedBean_Exception_SQL
+	 * @throws SQL
 	 */
 	protected function runQuery( $sql, $bindings )
 	{
@@ -121,7 +132,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 
 		try {
 			if ( strpos( 'pgsql', $this->dsn ) === 0 ) {
-				$statement = $this->pdo->prepare( $sql, array( PDO::PGSQL_ATTR_DISABLE_NATIVE_PREPARED_STATEMENT => true ) );
+				$statement = $this->pdo->prepare( $sql, array(\PDO::PGSQL_ATTR_DISABLE_NATIVE_PREPARED_STATEMENT => true ) );
 			} else {
 				$statement = $this->pdo->prepare( $sql );
 			}
@@ -141,14 +152,14 @@ class RedBean_Driver_PDO implements RedBean_Driver
 			} else {
 				$this->resultArray = array();
 			}
-		} catch ( PDOException $e ) {
+		} catch (\PDOException $e ) {
 			//Unfortunately the code field is supposed to be int by default (php)
 			//So we need a property to convey the SQL State code.
 			$err = $e->getMessage();
 
 			if ( $this->debug && $this->logger ) $this->logger->log( 'An error occurred: ' . $err );
 
-			$exception = new RedBean_Exception_SQL( $err, 0 );
+			$exception = new SQL( $err, 0 );
 			$exception->setSQLState( $e->getCode() );
 
 			throw $exception;
@@ -163,12 +174,12 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	 */
 	protected function setEncoding() 
 	{
-		$driver = $this->pdo->getAttribute( PDO::ATTR_DRIVER_NAME );
-		$version = floatval( $this->pdo->getAttribute( PDO::ATTR_SERVER_VERSION ) );
+		$driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME );
+		$version = floatval( $this->pdo->getAttribute(\PDO::ATTR_SERVER_VERSION ) );
 
 		if ($driver === 'mysql') {
 			$encoding = ($version >= 5.5) ? 'utf8mb4' : 'utf8';
-			$this->pdo->setAttribute( PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES '.$encoding ); //on every re-connect
+			$this->pdo->setAttribute(\PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES '.$encoding ); //on every re-connect
 			$this->pdo->exec(' SET NAMES '. $encoding); //also for current connection
 			$this->mysqlEncoding = $encoding;
 		}
@@ -186,10 +197,10 @@ class RedBean_Driver_PDO implements RedBean_Driver
 
 	/**
 	 * Constructor. You may either specify dsn, user and password or
-	 * just give an existing PDO connection.
+	 * just give an existing\PDO connection.
 	 * Examples:
-	 *    $driver = new RedBean_Driver_PDO($dsn, $user, $password);
-	 *    $driver = new RedBean_Driver_PDO($existingConnection);
+	 *    $driver = new\PDO($dsn, $user, $password);
+	 *    $driver = new\PDO($existingConnection);
 	 *
 	 * @param string|PDO $dsn    database connection string
 	 * @param string     $user   optional, usename to sign in
@@ -198,14 +209,14 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	 */
 	public function __construct( $dsn, $user = null, $pass = null )
 	{
-		if ( $dsn instanceof PDO ) {
+		if ( $dsn instanceof\PDO ) {
 			$this->pdo = $dsn;
 
 			$this->isConnected = true;
 
 			$this->setEncoding();
-			$this->pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-			$this->pdo->setAttribute( PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC );
+			$this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION );
+			$this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE,\PDO::FETCH_ASSOC );
 
 			// make sure that the dsn at least contains the type
 			$this->dsn = $this->getDatabaseType();
@@ -229,13 +240,13 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * Establishes a connection to the database using PHP PDO
+	 * Establishes a connection to the database using PHP\PDO
 	 * functionality. If a connection has already been established this
 	 * method will simply return directly. This method also turns on
-	 * UTF8 for the database and PDO-ERRMODE-EXCEPTION as well as
-	 * PDO-FETCH-ASSOC.
+	 * UTF8 for the database and\PDO-ERRMODE-EXCEPTION as well as
+	 *\PDO-FETCH-ASSOC.
 	 *
-	 * @throws PDOException
+	 * @throws\PDOException
 	 *
 	 * @return void
 	 */
@@ -246,30 +257,30 @@ class RedBean_Driver_PDO implements RedBean_Driver
 			$user = $this->connectInfo['user'];
 			$pass = $this->connectInfo['pass'];
 
-			$this->pdo = new PDO(
+			$this->pdo = new\PDO(
 				$this->dsn,
 				$user,
 				$pass,
-				array(PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-					   PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+				array(\PDO::ATTR_ERRMODE            =>\PDO::ERRMODE_EXCEPTION,
+					  \PDO::ATTR_DEFAULT_FETCH_MODE =>\PDO::FETCH_ASSOC,
 				)
 			);
 			
 			$this->setEncoding();
-			$this->pdo->setAttribute( PDO::ATTR_STRINGIFY_FETCHES, true );
+			$this->pdo->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, true );
 
 			$this->isConnected = true;
-		} catch ( PDOException $exception ) {
+		} catch (\PDOException $exception ) {
 			$matches = array();
 
 			$dbname  = ( preg_match( '/dbname=(\w+)/', $this->dsn, $matches ) ) ? $matches[1] : '?';
 
-			throw new PDOException( 'Could not connect to database (' . $dbname . ').', $exception->getCode() );
+			throw new\PDOException( 'Could not connect to database (' . $dbname . ').', $exception->getCode() );
 		}
 	}
 
 	/**
-	 * @see RedBean_Driver::GetAll
+	 * @see Driver::GetAll
 	 */
 	public function GetAll( $sql, $bindings = array() )
 	{
@@ -279,7 +290,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::GetCol
+	 * @see Driver::GetCol
 	 */
 	public function GetCol( $sql, $bindings = array() )
 	{
@@ -296,7 +307,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::GetCell
+	 * @see Driver::GetCell
 	 */
 	public function GetCell( $sql, $bindings = array() )
 	{
@@ -309,7 +320,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::GetRow
+	 * @see Driver::GetRow
 	 */
 	public function GetRow( $sql, $bindings = array() )
 	{
@@ -319,7 +330,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::Excecute
+	 * @see Driver::Excecute
 	 */
 	public function Execute( $sql, $bindings = array() )
 	{
@@ -329,7 +340,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::GetInsertID
+	 * @see Driver::GetInsertID
 	 */
 	public function GetInsertID()
 	{
@@ -339,7 +350,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::Affected_Rows
+	 * @see Driver::Affected_Rows
 	 */
 	public function Affected_Rows()
 	{
@@ -354,7 +365,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	 * results.
 	 *
 	 * @param boolean        $trueFalse turn on/off
-	 * @param RedBean_Logger $logger    logger instance
+	 * @param Logger $logger    logger instance
 	 *
 	 * @return void
 	 */
@@ -365,28 +376,28 @@ class RedBean_Driver_PDO implements RedBean_Driver
 		$this->debug = (bool) $tf;
 
 		if ( $this->debug and !$logger ) {
-			$logger = new RedBean_Logger_Default();
+			$logger = new LDefault();
 		}
 
 		$this->setLogger( $logger );
 	}
 
 	/**
-	 * Injects RedBean_Logger object.
+	 * Injects Logger object.
 	 * Sets the logger instance you wish to use.
 	 *
-	 * @param RedBean_Logger $logger the logger instance to be used for logging
+	 * @param Logger $logger the logger instance to be used for logging
 	 */
-	public function setLogger( RedBean_Logger $logger )
+	public function setLogger( Logger $logger )
 	{
 		$this->logger = $logger;
 	}
 
 	/**
-	 * Gets RedBean_Logger object.
-	 * Returns the currently active RedBean_Logger instance.
+	 * Gets Logger object.
+	 * Returns the currently active Logger instance.
 	 *
-	 * @return RedBean_Logger
+	 * @return Logger
 	 */
 	public function getLogger()
 	{
@@ -394,7 +405,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::StartTrans
+	 * @see Driver::StartTrans
 	 */
 	public function StartTrans()
 	{
@@ -404,7 +415,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::CommitTrans
+	 * @see Driver::CommitTrans
 	 */
 	public function CommitTrans()
 	{
@@ -414,7 +425,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * @see RedBean_Driver::FailTrans
+	 * @see Driver::FailTrans
 	 */
 	public function FailTrans()
 	{
@@ -424,9 +435,9 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * Returns the name of database driver for PDO.
-	 * Uses the PDO attribute DRIVER NAME to obtain the name of the
-	 * PDO driver.
+	 * Returns the name of database driver for\PDO.
+	 * Uses the\PDO attribute DRIVER NAME to obtain the name of the
+	 *\PDO driver.
 	 *
 	 * @return string
 	 */
@@ -434,7 +445,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	{
 		$this->connect();
 
-		return $this->pdo->getAttribute( PDO::ATTR_DRIVER_NAME );
+		return $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME );
 	}
 
 	/**
@@ -446,13 +457,13 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	{
 		$this->connect();
 
-		return $this->pdo->getAttribute( PDO::ATTR_CLIENT_VERSION );
+		return $this->pdo->getAttribute(\PDO::ATTR_CLIENT_VERSION );
 	}
 
 	/**
-	 * Returns the underlying PHP PDO instance.
+	 * Returns the underlying PHP\PDO instance.
 	 *
-	 * @return PDO
+	 * @return\PDO
 	 */
 	public function getPDO()
 	{
@@ -462,7 +473,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * Closes database connection by destructing PDO.
+	 * Closes database connection by destructing\PDO.
 	 *
 	 * @return void
 	 */
@@ -473,7 +484,7 @@ class RedBean_Driver_PDO implements RedBean_Driver
 	}
 
 	/**
-	 * Returns TRUE if the current PDO instance is connected.
+	 * Returns TRUE if the current\PDO instance is connected.
 	 *
 	 * @return boolean
 	 */

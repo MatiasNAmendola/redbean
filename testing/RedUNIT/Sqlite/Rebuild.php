@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Sqlite;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Sqlite_Rebuild
+ * Rebuild
  *
  * @file    RedUNIT/Sqlite/Rebuild.php
  * @desc    Test rebuilding of tables for SQLite
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Sqlite_Rebuild extends RedUNIT_Sqlite
+class Rebuild extends \RedUNIT\Sqlite
 {
 	/**
 	 * Test SQLite table rebuilding.

@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Base;
+
+use RedUNIT\Base;
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Base_Batch
+ * Batch
  *
  * @file    RedUNIT/Base/Batch.php
  * @desc    Tests batch loading of beans, i.e. loading large collections of beans in optimized way.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Batch extends RedUNIT_Base
+class Batch extends Base
 {
 
 	/**

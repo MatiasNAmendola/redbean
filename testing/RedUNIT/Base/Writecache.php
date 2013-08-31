@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\Plugin\QueryLogger;
+
 /**
- * RedUNIT_Base_Writecache
+ * Writecache
  *
  * @file    RedUNIT/Base/Writecache.php
  * @desc    Tests the Query Writer cache implemented in the
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Writecache extends RedUNIT_Base
+class Writecache extends Base
 {
 
 	/**
@@ -31,7 +44,7 @@ class RedUNIT_Base_Writecache extends RedUNIT_Base
 	{
 		testpack( 'Testing WriteCache Query Writer Cache' );
 
-		$logger = RedBean_Plugin_QueryLogger::getInstanceAndAttach( R::$adapter );
+		$logger = QueryLogger::getInstanceAndAttach( R::$adapter );
 
 		$book = R::dispense( 'book' )->setAttr( 'title', 'ABC' );
 
@@ -372,7 +385,7 @@ class RedUNIT_Base_Writecache extends RedUNIT_Base
 	{
 		testpack( 'Test cache flush (explicit)' );
 
-		$logger = RedBean_Plugin_QueryLogger::getInstanceAndAttach( R::$adapter );
+		$logger = QueryLogger::getInstanceAndAttach( R::$adapter );
 
 		$bean = R::dispense( 'bean' );
 

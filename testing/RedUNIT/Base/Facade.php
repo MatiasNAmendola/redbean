@@ -1,6 +1,24 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\AssociationManager;
+use RedBean\OODB;
+use RedBean\Toolbox;
+use RedBean\Adapter;
+use RedBean\QueryWriter;
+use RedBean\OODBBean;
+
 /**
- * RedUNIT_Base_Facade
+ * Facade
  *
  * @file    RedUNIT/Base/Facade.php
  * @desc    Tests basic functions through facade.
@@ -11,7 +29,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Facade extends RedUNIT_Base
+class Facade extends Base
 {
 
 	/**
@@ -35,16 +53,16 @@ class RedUNIT_Base_Facade extends RedUNIT_Base
 		$writer  = $toolbox->getWriter();
 		$redbean = $toolbox->getRedBean();
 		$pdo     = $adapter->getDatabase();
-		$a       = new RedBean_AssociationManager( $toolbox );
+		$a       = new AssociationManager( $toolbox );
 
-		asrt( R::$redbean instanceof RedBean_OODB, true );
-		asrt( R::$toolbox instanceof RedBean_Toolbox, true );
-		asrt( R::$adapter instanceof RedBean_Adapter, true );
-		asrt( R::$writer instanceof RedBean_QueryWriter, true );
+		asrt( R::$redbean instanceof OODB, true );
+		asrt( R::$toolbox instanceof Toolbox, true );
+		asrt( R::$adapter instanceof Adapter, true );
+		asrt( R::$writer instanceof QueryWriter, true );
 
 		$book = R::dispense( "book" );
 
-		asrt( $book instanceof RedBean_OODBBean, true );
+		asrt( $book instanceof OODBBean, true );
 
 		$book->title = "a nice book";
 
@@ -64,7 +82,7 @@ class RedUNIT_Base_Facade extends RedUNIT_Base
 			R::load( 'bookies', 999 );
 
 			fail();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			pass();
 		}
 

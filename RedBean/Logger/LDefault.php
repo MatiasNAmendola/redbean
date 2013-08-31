@@ -1,4 +1,11 @@
 <?php
+
+namespace RedBean\Logger;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Logger;
+
 /**
  * Logger. Provides a basic logging function for RedBeanPHP.
  *
@@ -13,7 +20,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Logger_Default implements RedBean_Logger
+class LDefault implements Logger
 {
 
 	/**

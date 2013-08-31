@@ -1,6 +1,15 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Base_Boxing
+ * Boxing
  *
  * @file    RedUNIT/Base/Boxing.php
  * @desc    Tests bean boxing and unboxing functionality.
@@ -11,7 +20,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Boxing extends RedUNIT_Base
+class Boxing extends Base
 {
 	
 	/**
@@ -59,15 +68,8 @@ class RedUNIT_Base_Boxing extends RedUNIT_Base
 
 		$box = $bean->box();
 
-		asrt( ( $box instanceof Model_Boxedbean ), true );
+		asrt( ( $box instanceof \Model_Boxedbean ), true );
 
 		R::store( $box );
 	}
-}
-
-/**
- * Test Model.
- */
-class Model_Boxedbean extends RedBean_SimpleModel
-{
 }

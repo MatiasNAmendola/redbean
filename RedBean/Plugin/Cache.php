@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\OODB;
+use RedBean\Plugin;
+use RedBean\QueryWriter;
+use RedBean\OODBBean;
+
 /**
  * RedBeanPHP Cache Plugin
  *
@@ -13,7 +23,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
+class Cache extends OODB implements Plugin
 {
 	/**
 	 * @var array
@@ -34,9 +44,9 @@ class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
 	 * Constructor.
 	 * Cache decorates RedBeanPHP OODB class, so needs a writer.
 	 *
-	 * @param RedBean_QueryWriter $writer
+	 * @param QueryWriter $writer
 	 */
-	public function __construct( RedBean_QueryWriter $writer )
+	public function __construct( QueryWriter $writer )
 	{
 		parent::__construct( $writer );
 	}
@@ -51,7 +61,7 @@ class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
 	 * @param string  $type type of bean you are looking for
 	 * @param integer $id   identifier of the bean
 	 *
-	 * @return RedBean_OODBBean $bean the bean object found
+	 * @return OODBBean $bean the bean object found
 	 */
 	public function load( $type, $id )
 	{
@@ -78,7 +88,7 @@ class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
 	/**
 	 * Stores a RedBean OODBBean and caches it.
 	 *
-	 * @param RedBean_OODBBean $bean the bean you want to store
+	 * @param OODBBean $bean the bean you want to store
 	 *
 	 * @return mixed
 	 */
@@ -99,7 +109,7 @@ class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
 	/**
 	 * Trashes a RedBean OODBBean and removes it from cache.
 	 *
-	 * @param RedBean_OODBBean $bean bean
+	 * @param OODBBean $bean bean
 	 *
 	 * @return mixed
 	 */
@@ -120,7 +130,7 @@ class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
 	 *
 	 * @param string $type
 	 *
-	 * @return RedBean_Plugin_Cache
+	 * @return Cache
 	 */
 	public function flush( $type )
 	{
@@ -134,7 +144,7 @@ class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin
 	/**
 	 * Flushes the cache completely.
 	 *
-	 * @return RedBean_Plugin_Cache
+	 * @return Cache
 	 */
 	public function flushAll()
 	{

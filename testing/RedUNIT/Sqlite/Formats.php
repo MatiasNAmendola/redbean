@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\Sqlite;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\DefaultBeanFormatter;
+
 /**
- * RedUNIT_Sqlite_Formats
+ * Formats
  *
  * @file    RedUNIT/Sqlite/Formats.php
  * @desc    Tests bean formatting with various data types.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Sqlite_Formats extends RedUNIT_Sqlite
+class Formats extends \RedUNIT\Sqlite
 {
 	public function unnamed0()
 	{
@@ -51,6 +58,6 @@ class RedUNIT_Sqlite_Formats extends RedUNIT_Sqlite
 
 		asrt( $cols['rating'], 'TEXT' );
 
-		R::$writer->setBeanFormatter( new RedBean_DefaultBeanFormatter );
+		R::$writer->setBeanFormatter( new DefaultBeanFormatter );
 	}
 }

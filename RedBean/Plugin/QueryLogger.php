@@ -1,4 +1,14 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Observer;
+use RedBean\Plugin;
+use RedBean\Observable;
+use RedBean\Adapter\DBAdapter;
+
 /**
  * Query Logger
  *
@@ -11,7 +21,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_QueryLogger implements RedBean_Observer, RedBean_Plugin
+class QueryLogger implements Observer, Plugin
 {
 
 	/**
@@ -31,13 +41,13 @@ class RedBean_Plugin_QueryLogger implements RedBean_Observer, RedBean_Plugin
 	 *
 	 * @static
 	 *
-	 * @param RedBean_Observable $adapter the adapter you want to attach to
+	 * @param Observable $adapter the adapter you want to attach to
 	 *
-	 * @return RedBean_Plugin_QueryLogger
+	 * @return QueryLogger
 	 */
-	public static function getInstanceAndAttach( RedBean_Observable $adapter )
+	public static function getInstanceAndAttach( Observable $adapter )
 	{
-		$queryLog = new RedBean_Plugin_QueryLogger;
+		$queryLog = new QueryLogger;
 
 		$adapter->addEventListener( 'sql_exec', $queryLog );
 
@@ -50,7 +60,7 @@ class RedBean_Plugin_QueryLogger implements RedBean_Observer, RedBean_Plugin
 	 * adapter will send a signal to the attached logger.
 	 *
 	 * @param  string                    $eventName ID of the event (name)
-	 * @param  RedBean_Adapter_DBAdapter $adapter   adapter that sends the signal
+	 * @param  DBAdapter $adapter   adapter that sends the signal
 	 *
 	 * @return void
 	 */

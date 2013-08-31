@@ -1,6 +1,19 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_Base_Dispense
+ * Dispense
  *
  * @file    RedUNIT/Base/Dispense.php
  * @desc    Tests bean dispensing functionality.
@@ -11,7 +24,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Dispense extends RedUNIT_Base
+class Dispense extends Base
 {
 	/**
 	 * Test dispense.
@@ -43,7 +56,7 @@ class RedUNIT_Base_Dispense extends RedUNIT_Base
 				$redbean->dispense( $value );
 
 				fail();
-			} catch ( RedBean_Exception_Security $e ) {
+			} catch ( Security $e ) {
 				pass();
 			}
 		}

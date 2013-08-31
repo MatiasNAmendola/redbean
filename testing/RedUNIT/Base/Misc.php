@@ -1,6 +1,23 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\Logger\LDefault;
+use RedBean\Logger;
+use RedBean\OODBBean;
+use RedBean\OODB;
+use RedBean\Adapter;
+use RedBean\QueryWriter;
+use RedBean\Plugin\Cooker;
+use RedBean\RException\Security;
+use RedBean\RException\SQL;
+use RedBean\Driver\RBPDO;
+
 /**
- * RedUNIT_Base_Misc
+ * Misc
  *
  * @file    RedUNIT/Base/Misc.php
  * @desc    Various tests.
@@ -11,7 +28,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Misc extends RedUNIT_Base
+class Misc extends Base
 {
 	/**
 	 * Test limited support for UUIDs.
@@ -84,9 +101,9 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 
 		$cal = R::dispense( 'calendar' );
 
-		$cal->when = new DateTime( '2000-01-01', new DateTimeZone( 'Pacific/Nauru' ) );
+		$cal->when = new \DateTime( '2000-01-01', new \DateTimeZone( 'Pacific/Nauru' ) );
 
-		asrt( $cal->when, '2000-01-01 00:00:00' );
+		asrt( $cal->when->format('Y-m-d H:i:s'), '2000-01-01 00:00:00' );
 
 		testpack( 'Affected rows test' );
 
@@ -110,10 +127,10 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 
 		testpack( 'Testing Logger' );
 
-		R::$adapter->getDatabase()->setLogger( new RedBean_Logger_Default );
+		R::$adapter->getDatabase()->setLogger( new LDefault );
 
-		asrt( ( R::$adapter->getDatabase()->getLogger() instanceof RedBean_Logger ), true );
-		asrt( ( R::$adapter->getDatabase()->getLogger() instanceof RedBean_Logger_Default ), true );
+		asrt( ( R::$adapter->getDatabase()->getLogger() instanceof Logger ), true );
+		asrt( ( R::$adapter->getDatabase()->getLogger() instanceof LDefault ), true );
 
 		$bean = R::dispense( 'bean' );
 
@@ -122,7 +139,7 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 
 		asrt( $bean->property, null );
 
-		asrt( ( $bean->setAttr( 'property', 2 ) instanceof RedBean_OODBBean ), true );
+		asrt( ( $bean->setAttr( 'property', 2 ) instanceof OODBBean ), true );
 		asrt( $bean->property, 2 );
 
 		asrt( preg_match( '/\d\d\d\d\-\d\d\-\d\d/', R::isoDate() ), 1 );
@@ -132,9 +149,9 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 		$adapter = R::getDatabaseAdapter();
 		$writer  = R::getWriter();
 
-		asrt( ( $redbean instanceof RedBean_OODB ), true );
-		asrt( ( $adapter instanceof RedBean_Adapter ), true );
-		asrt( ( $writer instanceof RedBean_QueryWriter ), true );
+		asrt( ( $redbean instanceof OODB ), true );
+		asrt( ( $adapter instanceof Adapter ), true );
+		asrt( ( $writer instanceof QueryWriter ), true );
 
 		R::setRedBean( $redbean );
 		pass(); //cant really test this
@@ -171,14 +188,14 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 
 		testpack( 'Testing Plugin Cooker' );
 
-		$cooker = new RedBean_Plugin_Cooker();
+		$cooker = new Cooker();
 		$cooker->setToolbox( $toolbox );
 
 		try {
 			asrt( $cooker->graph( 'abc' ), 'abc' );
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 
@@ -220,7 +237,7 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 				R::$method( 'select * from nowhere' );
 
 				fail();
-			} catch ( RedBean_Exception_SQL $e ) {
+			} catch ( SQL $e ) {
 				pass();
 			}
 		}
@@ -240,7 +257,7 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 		$adapter = R::getDatabaseAdapter();
 
 		if ( method_exists( R::$adapter->getDatabase(), 'getPDO' ) ){
-			asrt( $adapter->getDatabase()->getPDO() instanceof PDO, true );
+			asrt( $adapter->getDatabase()->getPDO() instanceof\PDO, true );
 		}
 
 		asrt( strlen( $adapter->getDatabase()->getDatabaseVersion() ) > 0, true );
@@ -442,16 +459,16 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 
 		if ( method_exists( R::$adapter->getDatabase(), 'getPDO' ) ) {
 			$pdo    = R::$adapter->getDatabase()->getPDO();
-			$driver = new RedBean_Driver_PDO( $pdo );
+			$driver = new RBPDO( $pdo );
 
 			pass();
 
-			asrt( $pdo->getAttribute( PDO::ATTR_ERRMODE ), PDO::ERRMODE_EXCEPTION );
-			asrt( $pdo->getAttribute( PDO::ATTR_DEFAULT_FETCH_MODE ), PDO::FETCH_ASSOC );
+			asrt( $pdo->getAttribute( \PDO::ATTR_ERRMODE ), \PDO::ERRMODE_EXCEPTION );
+			asrt( $pdo->getAttribute( \PDO::ATTR_DEFAULT_FETCH_MODE ), \PDO::FETCH_ASSOC );
 			asrt( strval( $driver->GetCell( 'select 123' ) ), '123' );
 		}
 
-		$a = new RedBean_Exception_SQL;
+		$a = new SQL;
 		$a->setSqlState( 'test' );
 
 		$b = strval( $a );
@@ -548,13 +565,13 @@ class RedUNIT_Base_Misc extends RedUNIT_Base
 
 		testpack( 'test assocManager check' );
 
-		$rb = new RedBean_OODB( R::$writer );
+		$rb = new OODB( R::$writer );
 
 		try {
 			$rb->getAssociationManager();
 
 			fail();
-		} catch ( RedBean_Exception_Security $e ) {
+		} catch ( Security $e ) {
 			pass();
 		}
 	}

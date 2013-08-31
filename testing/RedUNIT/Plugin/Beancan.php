@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Plugin;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\Plugin\BeanCanResty;
+use RedBean\SimpleModel;
+
 /**
- * RedUNIT_Plugin_Beancan
+ * Beancan
  *
  * @file    RedUNIT/Plugin/Beancan.php
  * @desc    Tests BeanCan Server
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
+class Beancan extends \RedUNIT\Plugin
 {
 
 	/**
@@ -53,7 +61,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		testpack( 'Test REST Lists' );
 
-		$can = new RedBean_Plugin_BeanCanResty( R::$toolbox );
+		$can = new BeanCanResty( R::$toolbox );
 
 		$can->setWhitelist( 'all' );
 
@@ -65,7 +73,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		asrt( count( $resp['result'] ), 2 );
 
-		$can = new RedBean_Plugin_BeanCanResty;
+		$can = new BeanCanResty;
 
 		$can->setWhitelist( 'all' );
 
@@ -548,7 +556,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		asrt( isset( $resp['error'] ), true );
 
-		Model_Setting::$closed = true;
+		\Model_Setting::$closed = true;
 
 		$resp = $can->handleREST(
 			$user,
@@ -558,7 +566,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		asrt( isset( $resp['error'] ), true );
 
-		Model_Setting::$closed = false;
+		\Model_Setting::$closed = false;
 
 		// Some other scenarios, not allowed to post nested sets.
 		$village = R::dispense( 'village' );
@@ -810,7 +818,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		testpack( "Test Whitelist" );
 
-		$can = new RedBean_Plugin_BeanCan;
+		$can = new \RedBean\Plugin\BeanCan;
 
 		$can->setWhitelist( 'all' );
 
@@ -836,7 +844,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 		asrt( $rs["error"]["code"], -32600 );
 		asrt( $rs["error"]["message"], 'This bean is not available. Set whitelist to "all" or add to whitelist.' );
 
-		$can = new RedBean_Plugin_BeanCan;
+		$can = new \RedBean\Plugin\BeanCan;;
 
 		$rs = json_decode( fakeBeanCanServerRequest( "candybar:store", array( array( "brand" => "darkchoco", "taste" => "bitter" ) ), 1, array( 'candybar' => array( 'like' ) ) ), true );
 
@@ -859,7 +867,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 		asrt( $rs["error"]["code"], -32600 );
 		asrt( $rs["error"]["message"], 'This bean is not available. Set whitelist to "all" or add to whitelist.' );
 
-		$can = new RedBean_Plugin_BeanCan;
+		$can = new \RedBean\Plugin\BeanCan;
 
 		$rs = json_decode( fakeBeanCanServerRequest( "candybar:store", array( array( "brand" => "darkchoco", "taste" => "bitter" ) ), 1, array( 'candybar' => array( 'store' ) ) ), true );
 
@@ -900,7 +908,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		testpack( "invalid request" );
 
-		$can = new RedBean_Plugin_BeanCan;
+		$can = new \RedBean\Plugin\BeanCan;
 
 		$can->setWhitelist( 'all' );
 
@@ -1112,7 +1120,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 			'id'      => '1'
 		);
 
-		$can = new RedBean_Plugin_BeanCan;
+		$can = new \RedBean\Plugin\BeanCan;
 
 		$request = json_encode( $j );
 
@@ -1128,7 +1136,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 			'method'  => 'method'
 		);
 
-		$can = new RedBean_Plugin_BeanCan;
+		$can = new \RedBean\Plugin\BeanCan;
 
 		$request = json_encode( $j );
 
@@ -1141,7 +1149,7 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 
 		R::nuke();
 
-		$server = new RedBean_Plugin_BeanCan();
+		$server = new \RedBean\Plugin\BeanCan;
 
 		$book = R::dispense( 'book' );
 
@@ -1226,28 +1234,5 @@ class RedUNIT_Plugin_Beancan extends RedUNIT_Plugin
 		asrt( isset( $rs['id'] ), true );
 
 		asrt( $rs['id'], 0 );
-	}
-}
-
-class Model_Page extends RedBean_SimpleModel
-{
-	public function mail( $who )
-	{
-		return 'mail has been sent to ' . $who;
-	}
-
-	public function err()
-	{
-		throw new Exception( 'fake error', 123 );
-	}
-}
-
-class Model_Setting extends RedBean_SimpleModel
-{
-	public static $closed = false;
-
-	public function open()
-	{
-		if ( self::$closed ) throw new Exception( 'closed' );
 	}
 }

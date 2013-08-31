@@ -1,6 +1,13 @@
 <?php
+
+namespace RedUNIT\Plugin;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_Plugin_Timeline
+ * Timeline
  *
  * @file    RedUNIT/Plugin/Timeline.php
  * @desc    Tests the Time Line feature for logging schema modifications.
@@ -11,7 +18,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Plugin_Timeline extends RedUNIT_Plugin
+class Timeline extends \RedUNIT\Plugin
 {
 	/**
 	 * Test TimeLine plugin.
@@ -22,10 +29,10 @@ class RedUNIT_Plugin_Timeline extends RedUNIT_Plugin
 	{
 		// test for correct exception in case of non-existant file.
 		try {
-			$timeLine = new RedBean_Plugin_TimeLine( 'some-non-existant-file' );
+			$timeLine = new \RedBean\Plugin\TimeLine( 'some-non-existant-file' );
 
 			fail();
-		} catch ( RedBean_Exception_Security $exception ) {
+		} catch ( Security $exception ) {
 			pass();
 		}
 

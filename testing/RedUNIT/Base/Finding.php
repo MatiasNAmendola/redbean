@@ -1,6 +1,21 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\AssociationManager;
+use RedBean\OODB;
+use RedBean\RException\Security;
+
 /**
- * RedUNIT_Base_Finding
+ * Finding
  *
  * @file    RedUNIT/Base/Finding.php
  * @desc    Tests finding beans.
@@ -11,7 +26,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Finding extends RedUNIT_Base {
+class Finding extends Base {
 	
 	/**
 	 * Begin testing.
@@ -27,7 +42,7 @@ class RedUNIT_Base_Finding extends RedUNIT_Base {
 		$redbean = $toolbox->getRedBean();
 		$pdo     = $adapter->getDatabase();
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$page = $redbean->dispense( "page" );
 
@@ -77,7 +92,7 @@ class RedUNIT_Base_Finding extends RedUNIT_Base {
 			$redbean->store( $bean );
 		}
 
-		$redbean->find( "wine", array( "id" => 5 ) ); //  Finder:where call RedBean_OODB::convertToBeans
+		$redbean->find( "wine", array( "id" => 5 ) ); //  Finder:where call OODB::convertToBeans
 
 		$bean2 = $redbean->load( "anotherbean", 5 );
 
@@ -114,7 +129,7 @@ class RedUNIT_Base_Finding extends RedUNIT_Base {
 		try {
 			R::find( 'bean', ' id > 0 ', 'invalid bindings argument' );
 			fail();
-		} catch ( RedBean_Exception_Security $exception ) {
+		} catch ( Security $exception ) {
 			pass();
 		}
 		
@@ -345,7 +360,7 @@ class RedUNIT_Base_Finding extends RedUNIT_Base {
 		try {
 			$referencePage->searchIn('sharedPage');
 			fail();
-		} catch (RedBean_Exception_Security $exception) {
+		} catch (Security $exception) {
 			pass();
 		}
 		

@@ -1,6 +1,12 @@
 <?php
+
+namespace RedUNIT\Base;
+
+use RedUNIT\Base;
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Base_Issue90
+ * Issue90
  *
  * @file    RedUNIT/Base/Issue90.php
  * @desc    Issue #90 - cannot trash bean with ownproperty if checked in model.
@@ -11,7 +17,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Issue90 extends RedUNIT_Base
+class Issue90 extends Base
 {
 	/**
 	 * Test for issue90.

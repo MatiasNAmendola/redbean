@@ -1,6 +1,14 @@
 <?php
+
+namespace RedUNIT\Blackhole;
+
+//Using the following RedBeanPHP Components:
+
+use RedUNIT\Blackhole; 
+use RedBean\Facade as R;
+
 /**
- * RedUNIT_Blackhole_Tainted
+ * Tainted
  *
  * @file    RedUNIT/Blackhole/Tainted.php
  * @desc    Tests tainted flag for OODBBean objects.
@@ -11,7 +19,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Blackhole_Tainted extends RedUNIT_Blackhole
+class Tainted extends Blackhole
 {
 	/**
 	 * Test tainted.

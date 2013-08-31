@@ -1,6 +1,24 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+
+
+//Using the following RedBeanPHP Components: 
+
+use RedUNIT\Base; 
+
+use RedBean\ToolBox;
+use RedBean\AssociationManager;
+use RedBean\RException\SQL;
+use RedBean\RException\Security;
+use RedBean\SimpleModel;
+use RedBean\QueryWriter\MySQL;
+
 /**
- * RedUNIT_Base_Association
+ * Association
  *
  * @file    RedUNIT/Base/Association.php
  * @desc    Tests Association API (N:N associations)
@@ -11,7 +29,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Association extends RedUNIT_Base
+class Association extends Base
 {
 	/**
 	 * MySQL specific tests.
@@ -29,10 +47,10 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 		$bunny  = R::dispense( 'bunny' );
 		$carrot = R::dispense( 'carrot' );
 
-		$faultyWriter  = new FaultyWriter( R::$toolbox->getDatabaseAdapter() );
-		$faultyToolbox = new RedBean_ToolBox( R::$toolbox->getRedBean(), R::$toolbox->getDatabaseAdapter(), $faultyWriter );
+		$faultyWriter  = new \FaultyWriter( R::$toolbox->getDatabaseAdapter() );
+		$faultyToolbox = new ToolBox( R::$toolbox->getRedBean(), R::$toolbox->getDatabaseAdapter(), $faultyWriter );
 
-		$faultyAssociationManager = new RedBean_AssociationManager( $faultyToolbox );
+		$faultyAssociationManager = new AssociationManager( $faultyToolbox );
 
 		$faultyWriter->setSQLState( '23000' );
 
@@ -47,7 +65,7 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 		try {
 			$faultyAssociationManager->associate( $bunny, $carrot );
 			fail();
-		} catch ( RedBean_Exception_SQL $exception ) {
+		} catch ( SQL $exception ) {
 			pass();
 		}
 	}
@@ -67,19 +85,19 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 
 		R::associate( $house, $ghost );
 
-		Model_Ghost_House::$deleted = false;
+		\Model_Ghost_House::$deleted = false;
 
 		R::unassociate( $house, $ghost );
 
 		// No fast-track, assoc bean got trashed
-		asrt( Model_Ghost_House::$deleted, true );
+		asrt( \Model_Ghost_House::$deleted, true );
 
-		Model_Ghost_House::$deleted = false;
+		\Model_Ghost_House::$deleted = false;
 
 		R::unassociate( $house, $ghost, true );
 
 		// Fast-track, assoc bean got deleted right away
-		asrt( Model_Ghost_House::$deleted, false );
+		asrt( \Model_Ghost_House::$deleted, false );
 	}
 
 	/**
@@ -94,19 +112,19 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 
 		R::associate( $ghost, $ghost2 );
 
-		Model_Ghost_Ghost::$deleted = false;
+		\Model_Ghost_Ghost::$deleted = false;
 
 		R::unassociate( $ghost, $ghost2 );
 
 		// No fast-track, assoc bean got trashed
-		asrt( Model_Ghost_Ghost::$deleted, true );
+		asrt( \Model_Ghost_Ghost::$deleted, true );
 
-		Model_Ghost_Ghost::$deleted = false;
+		\Model_Ghost_Ghost::$deleted = false;
 
 		R::unassociate( $ghost, $ghost2, true );
 
 		// Fast-track, assoc bean got deleted right away
-		asrt( Model_Ghost_Ghost::$deleted, false );
+		asrt( \Model_Ghost_Ghost::$deleted, false );
 	}
 
 	/**
@@ -216,11 +234,11 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 			R::store( $book );
 
 			fail();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			$expected = $e;
 		}
 
-		asrt( ( $expected instanceof RedBean_Exception_SQL ), true );
+		asrt( ( $expected instanceof SQL ), true );
 
 		asrt( R::count( 'book' ), 1 );
 
@@ -241,11 +259,11 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 			R::store( $book );
 
 			fail();
-		} catch ( RedBean_Exception_SQL $e ) {
+		} catch ( SQL $e ) {
 			$expected = $e;
 		}
 
-		asrt( ( $expected instanceof RedBean_Exception_SQL ), true );
+		asrt( ( $expected instanceof SQL ), true );
 
 		asrt( R::count( 'book' ), 1 );
 	}
@@ -311,20 +329,20 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 	{
 		try {
 			R::related( null, 'book' );
-		} catch ( Exception $e ) {
-			asrt( ( $e instanceof RedBean_Exception_Security ), true );
+		} catch (\Exception $e ) {
+			asrt( ( $e instanceof Security ), true );
 		}
 
 		try {
 			R::related( 100, 'book' );
-		} catch ( Exception $e ) {
-			asrt( ( $e instanceof RedBean_Exception_Security ), true );
+		} catch (\Exception $e ) {
+			asrt( ( $e instanceof Security ), true );
 		}
 
 		try {
 			R::related( array( 'fakeBean' ), 'book' );
-		} catch ( Exception $e ) {
-			asrt( ( $e instanceof RedBean_Exception_Security ), true );
+		} catch (\Exception $e ) {
+			asrt( ( $e instanceof Security ), true );
 		}
 
 		list( $r1, $r2, $r3 ) = R::dispense( 'reader', 3 );
@@ -403,13 +421,13 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 		$testA = $rb->dispense( 'testA' );
 		$testB = $rb->dispense( 'testB' );
 
-		$a     = new RedBean_AssociationManager( $toolbox );
+		$a     = new AssociationManager( $toolbox );
 
 		try {
 			$a->related( $testA, "testB" );
 
 			pass();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			fail();
 		}
 
@@ -431,7 +449,7 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 
 		$redbean->store( $page2 );
 
-		$a = new RedBean_AssociationManager( $toolbox );
+		$a = new AssociationManager( $toolbox );
 
 		$a->associate( $page, $user );
 
@@ -616,65 +634,5 @@ class RedUNIT_Base_Association extends RedUNIT_Base
 		$bar->id = 2;
 
 		asrt( R::areRelated( $foo, $bar ), false );
-	}
-}
-
-/**
- * Mock class for testing purposes.
- */
-class Model_Ghost_House extends RedBean_SimpleModel
-{
-	public static $deleted = false;
-
-	public function delete()
-	{
-		self::$deleted = true;
-	}
-}
-
-/**
- * Mock class for testing purposes.
- */
-class Model_Ghost_Ghost extends RedBean_SimpleModel
-{
-	public static $deleted = false;
-
-	public function delete()
-	{
-		self::$deleted = true;
-	}
-}
-
-/**
- * Mock class for testing purposes.
- */
-class FaultyWriter extends RedBean_QueryWriter_MySQL
-{
-
-	protected $sqlState;
-
-	/**
-	 * Mock method.
-	 *
-	 * @param string $sqlState sql state
-	 */
-	public function setSQLState( $sqlState )
-	{
-		$this->sqlState = $sqlState;
-	}
-
-	/**
-	 * Mock method
-	 *
-	 * @param string $sourceType destination type
-	 * @param string $destType   source type
-	 *
-	 * @throws RedBean_Exception_SQL
-	 */
-	public function addConstraintForTypes( $sourceType, $destType )
-	{
-		$exception = new RedBean_Exception_SQL;
-		$exception->setSQLState( $this->sqlState );
-		throw $exception;
 	}
 }

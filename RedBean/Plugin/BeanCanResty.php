@@ -1,4 +1,17 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Plugin;
+use RedBean\OODB;
+use RedBean\ToolBox;
+use RedBean\OODBBean;
+use RedBean\Finder;
+use RedBean\Facade;
+use RedBean\Plugin\BeanCan;
+
 /**
  * BeanCan Server.
  * A RESTy server for RedBeanPHP.
@@ -16,7 +29,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
+class BeanCanResty implements Plugin
 {
 	/**
 	 * HTTP Error codes used by Resty BeanCan Server.
@@ -27,12 +40,12 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	const C_HTTP_INTERNAL_SERVER_ERROR = 500;
 
 	/**
-	 * @var RedBean_OODB
+	 * @var OODB
 	 */
 	private $oodb;
 
 	/**
-	 * @var RedBean_ToolBox
+	 * @var ToolBox
 	 */
 	private $toolbox;
 
@@ -65,7 +78,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	 * Reference bean, the bean used to find other beans in a REST request.
 	 * All beans should be reachable given this root bean.
 	 *
-	 * @var RedBean_OODBBean
+	 * @var OODBBean
 	 */
 	private $root;
 
@@ -77,7 +90,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	private $list;
 
 	/**
-	 * @var RedBean_OODBBean
+	 * @var OODBBean
 	 */
 	private $bean;
 
@@ -377,7 +390,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	 */
 	private function findBeanByURI()
 	{
-		$finder = new RedBean_Finder( $this->toolbox );
+		$finder = new Finder( $this->toolbox );
 
 		$this->bean     = $finder->findByPath( $this->root, $this->uri );
 		$this->beanType = $this->bean->getMeta( 'type' );
@@ -465,7 +478,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 
 			try {
 				$this->findBeanByURI();
-			} catch ( Exception $e ) {
+			} catch (\Exception $e ) {
 				return $this->resp( null, self::C_HTTP_NOT_FOUND, $e->getMessage() );
 			}
 
@@ -474,7 +487,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 			}
 
 			return $this->dispatch();
-		} catch ( Exception $e ) {
+		} catch (\Exception $e ) {
 			return $this->resp( null, self::C_HTTP_INTERNAL_SERVER_ERROR, 'Exception: ' . $e->getCode() );
 		}
 	}
@@ -497,16 +510,16 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	/**
 	 * Constructor.
 	 *
-	 * @param RedBean_ToolBox $toolbox (optional)
+	 * @param ToolBox $toolbox (optional)
 	 */
 	public function __construct( $toolbox = null )
 	{
-		if ( $toolbox instanceof RedBean_ToolBox ) {
+		if ( $toolbox instanceof ToolBox ) {
 			$this->toolbox = $toolbox;
 			$this->oodb    = $toolbox->getRedBean();
 		} else {
-			$this->toolbox = RedBean_Facade::getToolBox();
-			$this->oodb    = RedBean_Facade::getRedBean();
+			$this->toolbox = Facade::getToolBox();
+			$this->oodb    = Facade::getRedBean();
 		}
 	}
 
@@ -516,7 +529,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	 *
 	 * @param array|string $whitelist  a white list of beans and methods that should be accessible through the BeanCan Server.
 	 *
-	 * @return RedBean_Plugin_BeanCan
+	 * @return BeanCan
 	 */
 	public function setWhitelist( $whitelist )
 	{
@@ -538,7 +551,7 @@ class RedBean_Plugin_BeanCanResty implements RedBean_Plugin
 	 * per type, if a list gets accessed the SQL with the type-key of the list will be used to filter
 	 * or sort the results.
 	 *
-	 * @param RedBean_OODBBean $root        root bean for REST action
+	 * @param OODBBean $root        root bean for REST action
 	 * @param string           $uri         the URI of the RESTful operation
 	 * @param string           $method      the method you want to apply
 	 * @param array            $payload     payload (for POSTs)

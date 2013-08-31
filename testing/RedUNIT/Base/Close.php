@@ -1,6 +1,18 @@
 <?php
+
+namespace RedUNIT\Base;
+
+//Using the following RedBeanPHP Components:
+use RedBean\Facade as R;
+use RedUNIT\Base; 
+use RedBean\Setup;
+use RedBean\ToolBox;
+use RedBean\Driver\RBOCI;
+use RedBean\QueryWriter\Oracle;
+use RedBean\QueryWriter\SQLiteT;
+
 /**
- * RedUNIT_Base_Close
+ * Close
  *
  * @file    RedUNIT/Base/Close.php
  * @desc    Tests database closing functionality.
@@ -11,7 +23,7 @@
  * This source file is subject to the New BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedUNIT_Base_Close extends RedUNIT_Base
+class Close extends Base
 {
 	
 	/**
@@ -35,26 +47,13 @@ class RedUNIT_Base_Close extends RedUNIT_Base
 		asrt( ( $id > 0 ), true );
 
 		// Test freeze via kickstart in setup
-		$toolbox = RedBean_Setup::kickstart( 'sqlite:/tmp/bla.txt', null, null, true );
+		$toolbox = Setup::kickstart( 'sqlite:/tmp/bla.txt', null, null, true );
 
 		asrt( $toolbox->getRedBean()->isFrozen(), true );
 
 		// Test Oracle setup
-		$toolbox = RedBean_Setup::kickstart( 'oracle:test-value', 'test', 'test', false );
+		$toolbox = Setup::kickstart( 'oracle:test-value', 'test', 'test', false );
 
-		asrt( ( $toolbox instanceof RedBean_ToolBox ), true );
+		asrt( ( $toolbox instanceof ToolBox ), true );
 	}
 }
-
-if ( !class_exists( 'RedBean_Driver_OCI' ) ) {
-	class RedBean_Driver_OCI
-	{
-	}
-}
-if ( !class_exists( 'RedBean_QueryWriter_Oracle' ) ) {
-	class RedBean_QueryWriter_Oracle extends RedBean_QueryWriter_SQLiteT
-	{
-	}
-}
-
-

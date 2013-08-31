@@ -2,6 +2,8 @@
 
 use \RedBean\Facade as R;
 
+define('REDBEAN_MODEL_PREFIX', '\\Model_');
+
 /**
  * Selector
  *
@@ -125,7 +127,7 @@ $allPacks = array(
 	'Base/Facade',
 	'Base/Fuse',
 	'Base/Tags',
-	'Base/Null',
+	'Base/NullTest',
 	'Base/Issue90',
 	'Base/Issue259',
 	'Base/Nuke',
@@ -190,9 +192,9 @@ $packList = array_merge( $packList, $suffix );
 foreach ( $packList as $testPack ) {
 	require_once( $path . $testPack . '.php' );
 
-	$testClassName = str_replace( ' ', '_', ( str_replace( '/', ' ', $testPack ) ) );
+	$testClassName = str_replace( ' ', '\\', ( str_replace( '/', ' ', $testPack ) ) );
 
-	$testClass     = 'RedUNIT_' . ucfirst( $testClassName );
+	$testClass     = '\\RedUNIT\\' . ucfirst( $testClassName );
 
 	$test          = new $testClass();
 

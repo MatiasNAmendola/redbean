@@ -1,12 +1,19 @@
 <?php
+
+namespace RedBean\Plugin;
+
+//Using the following RedBeanPHP Components: 
+
+use RedBean\Plugin\QueryLogger;
+use RedBean\Plugin;
+use RedBean\RException\Security;
+use RedBean\Adapter\DBAdapter;
+
 /**
  * TimeLine
  *
  * @file    RedBean/Plugin/TimeLine.php
  * @desc    Monitors schema changes to ease deployment.
- *
- * @plugin  public static function log($filename) { $tl = new RedBean_Plugin_TimeLine($filename); self::$adapter->addEventListener('sql_exec', $tl);}
- *
  * @author  Gabor de Mooij and the RedBeanPHP Community
  * @license BSD/GPLv2
  *
@@ -14,7 +21,7 @@
  * This source file is subject to the BSD/GPLv2 License that is bundled
  * with this source code in the file license.txt.
  */
-class RedBean_Plugin_TimeLine extends RedBean_Plugin_QueryLogger implements RedBean_Plugin
+class TimeLine extends QueryLogger implements Plugin
 {
 	/**
 	 * Path to file to write SQL and comments to.
@@ -22,19 +29,19 @@ class RedBean_Plugin_TimeLine extends RedBean_Plugin_QueryLogger implements RedB
 	 * @var string
 	 */
 	protected $file;
-
+	
 	/**
 	 * Constructor.
 	 * Requires a path to an existing and writable file.
 	 *
 	 * @param string $outputPath path to file to write schema changes to
 	 *
-	 * @throws RedBean_Exception_Security
+	 * @throws Security
 	 */
 	public function __construct( $outputPath )
 	{
 		if ( !file_exists( $outputPath ) || !is_writable( $outputPath ) ) {
-			throw new RedBean_Exception_Security( 'Cannot write to file: ' . $outputPath );
+			throw new Security( 'Cannot write to file: ' . $outputPath );
 		}
 
 		$this->file = $outputPath;
@@ -46,7 +53,7 @@ class RedBean_Plugin_TimeLine extends RedBean_Plugin_QueryLogger implements RedB
 	 * adapter will send a signal to the attached logger.
 	 *
 	 * @param  string                    $eventName          ID of the event (name)
-	 * @param  RedBean_Adapter_DBAdapter $adapter            adapter that sends the signal
+	 * @param  DBAdapter $adapter            adapter that sends the signal
 	 *
 	 * @return void
 	 */
